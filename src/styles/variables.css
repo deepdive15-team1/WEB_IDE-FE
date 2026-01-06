@@ -1,0 +1,22 @@
+:root {
+  /* Color Variables */
+  --color-main: #7C3AED;
+  --color-main-light: #FAF5FF;
+  --color-accent: #06B6D4;
+  --color-completed-bg: #DCFCE7;
+  --color-completed-text: #008236;
+
+  /* Gray Scale */
+  --color-gray-50: #F3F3F5;
+  --color-gray-200: #ECECF0;
+  --color-gray-600: #717182;
+
+  /* Base Colors */
+  --color-white: #FFFFFF;
+  --color-black: #0A0A0A;
+
+  /* Text & Background Colors */
+  --color-text: var(--color-black);
+  --color-bg: var(--color-white);
+}
+
