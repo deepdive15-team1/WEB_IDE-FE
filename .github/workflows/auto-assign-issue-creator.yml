@@ -17,8 +17,8 @@ jobs:
             
             // 프론트엔드 팀 멤버 목록
             const frontendTeam = [
-              'san-sae',   // 최유림
-              'MINO-01'    // 금민호
+              'san-sae',
+              'MINO-01' 
             ];
             
             // 이슈 생성자가 프론트엔드 팀 멤버인 경우에만 할당
