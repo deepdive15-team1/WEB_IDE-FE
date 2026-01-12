@@ -5,7 +5,7 @@ Chip은 작은 라벨이나 태그를 표시하는 데 사용되는 컴포넌트
 ## 설치 및 사용
 
 ```jsx
-import Chip from './components/Chip/Chip';
+import Chip from './components/Chip';
 
 // 기본 사용
 <Chip>기본 칩</Chip>
