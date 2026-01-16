@@ -7,10 +7,8 @@ export default function PostSection({ title, descript, children }) {
         <Title>{title}</Title>
         <Descript>{descript}</Descript>
       </TitleWrapper>
-      
-      <ContentWrapper>
-        {children}
-      </ContentWrapper>
+
+      <ContentWrapper>{children}</ContentWrapper>
     </Contrainer>
   );
 }
@@ -24,22 +22,24 @@ const Contrainer = styled.section`
 `;
 
 const TitleWrapper = styled.header`
-    dispaly: flex;
-    flex-direction: column; 
+  dispaly: flex;
+  flex-direction: column;
 `;
 
 const Title = styled.div`
-    font-size: 16px;
-    color: var(--color-text);
-    padding-bottom: 8px;
+  font-size: 16px;
+  color: var(--color-text);
+  padding-bottom: 8px;
 `;
 
 const Descript = styled.div`
-    font-size: 16px;
-    color: var(--color-gray-600);
+  font-size: 16px;
+  color: var(--color-gray-600);
 `;
 
-
 const ContentWrapper = styled.article`
-
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 10px;
 `;
