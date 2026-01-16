@@ -17,7 +17,7 @@
 `label`과 `placeholder`를 사용하여 기본적인 텍스트에어리어를 구성합니다.
 
 ```jsx
-import { Textarea } from '@/components/common/Textarea';
+import Textarea from '@/components/common/Textarea/Textarea';
 
 <Textarea 
   label="내용" 
