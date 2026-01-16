@@ -96,9 +96,9 @@ export default function SelectInput({
         $open={open}
       >
         {isEmpty ? (
-          <span style={{ color: "var(--color-gray-600)" }}>{placeholder}</span>
+          <PlaceholderText>{placeholder}</PlaceholderText>
         ) : (
-          display
+          <DisplayText>{display}</DisplayText>
         )}
       </SelectDisplay>
       <NativeInput
@@ -144,13 +144,14 @@ export default function SelectInput({
 const SelectDisplay = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
   width: 100%;
   height: 100%;
   cursor: pointer;
   user-select: none;
   outline: none;
   color: var(--color-text);
+  min-width: 0;
+  padding-right: 44px; /* 아이콘 영역 확보 (right: 12px + 아이콘 20px + 여유 12px) */
 
   ${({ $disabled }) =>
     $disabled &&
@@ -162,6 +163,36 @@ const SelectDisplay = styled.div`
     outline: 2px solid var(--color-main);
     outline-offset: 2px;
   }
+`;
+
+const PlaceholderText = styled.span`
+  flex: 1;
+  width: 100%;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-family: inherit;
+  color: var(--color-gray-600);
+  font-size: inherit;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+`;
+
+const DisplayText = styled.span`
+  flex: 1;
+  width: 100%;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-family: inherit;
+  color: inherit;
+  font-size: inherit;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
 `;
 
 const NativeInput = styled.input`
