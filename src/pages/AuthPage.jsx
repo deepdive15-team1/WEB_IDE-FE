@@ -2,9 +2,9 @@ import { useState } from "react";
 import LoginForm from "../components/auth/login/LoginForm";
 import SignupForm from "../components/auth//signup/SignupForm";
 import styled from "styled-components";
-import { MainLogo } from "../assets/icons/MainLogo"
-import { LoginIcon } from "../assets/icons/LoginIcon";
-import { SignupIcon } from "../assets/icons/SignupIcon";
+import logo from "../assets/logo.svg"
+import LoginIcon from "../assets/icons/LoginIcon.svg";
+import SignupIcon from "../assets/icons/SignupIcon.svg";
 
 const PageContainer = styled.div`
   min-height: 100vh;
@@ -26,7 +26,6 @@ const LogoSection = styled.div`
   text-align: center;
   margin-bottom: 30px;
 `;
-
 const TabGroup = styled.div`
   background-color: var(--color-gray-200);
   border-radius: 15px;
@@ -65,17 +64,17 @@ function AuthPage() {
     <PageContainer>
       <AuthCard>
         <LogoSection>
-          <MainLogo />
+          <img src={logo} alt="메인로고" width="56" height="56"/>
           <h2>Code Review IDE</h2>
           <div>코드 리뷰를 위한 협업 플랫폼</div>
         </LogoSection>
         <TabGroup>
           <TabButton $active={mode === "login"} onClick={() => setMode("login")}>
-            <LoginIcon />
+            <img src={LoginIcon} alt="로그인 아이콘" />
             로그인
           </TabButton>
           <TabButton $active={mode === "signup"} onClick={() => setMode("signup")}>
-            <SignupIcon />
+            <img src={SignupIcon} alt="회원가입 아이콘" />
             회원가입
           </TabButton>
         </TabGroup>
