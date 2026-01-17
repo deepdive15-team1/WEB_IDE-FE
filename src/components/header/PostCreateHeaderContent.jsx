@@ -25,7 +25,7 @@ export default function PostCreateHeaderContent() {
         </Content>
 
         {/* 추후 게시글 생성 api와 연결 */}
-        <Button variant="primary" size="md" startIcon={<img src={storeIcon} />}>
+        <Button variant="primary" size="md" startIcon={storeIcon}>
           게시글 생성
         </Button>
       </Wrapper>

@@ -8,7 +8,7 @@ import profileIcon from "../../assets/profile.svg";
 import calendarIcon from "../../assets/calendar.svg";
 import checkIcon from "../../assets/check.svg";
 
-export default function PostCreateHeaderContent() {
+export default function PostDetailHeaderContent() {
   const navigate = useNavigate();
 
   const handleBack = () => {
@@ -53,7 +53,7 @@ export default function PostCreateHeaderContent() {
         </Content>
 
         {/* 추후 게시글 생성 api와 연결 */}
-        <Button variant="primary" size="md" startIcon={<img src={checkIcon} />}>
+        <Button variant="primary" size="md" startIcon={checkIcon}>
           리뷰 완료
         </Button>
       </Wrapper>

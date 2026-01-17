@@ -7,6 +7,7 @@ import logoIcon from "../../assets/logo.svg";
 import postIcon from "../../assets/post.svg";
 import profileIcon from "../../assets/profile.svg";
 import logoutIcon from "../../assets/logout.svg";
+
 export default function PrimaryHeader() {
   const navigate = useNavigate();
 
@@ -22,7 +23,7 @@ export default function PrimaryHeader() {
         <Button
           variant="text"
           size="sm"
-          startIcon={<img src={postIcon} />}
+          startIcon={postIcon}
           // 추후 포스트 리스트 페이지로 이동하도록 수정
           onClick={() => navigate("/")} 
         >
@@ -31,7 +32,7 @@ export default function PrimaryHeader() {
         <Button 
           variant="text" 
           size="sm" 
-          startIcon={<img src={profileIcon} />}
+          startIcon={profileIcon}
           // 추후 포스트 리스트 페이지로 이동하도록 수정
           onClick={() => navigate("/")} 
         >
@@ -47,7 +48,7 @@ export default function PrimaryHeader() {
         <Button 
           variant="text" 
           size="sm" 
-          startIcon={<img src={logoutIcon} />}
+          startIcon={logoutIcon}
           // 추후 로그아웃 로직으로 수정
           onClick={() => navigate("/")} 
         >
