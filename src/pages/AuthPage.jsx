@@ -5,33 +5,14 @@ import styled from "styled-components";
 import logo from "../assets/logo.svg"
 import LoginIcon from "../assets/icons/LoginIcon.svg";
 import SignupIcon from "../assets/icons/SignupIcon.svg";
+import { PageContainer, AuthCard,LogoSection } from "../components/auth/styles/AuthLayout";
 
-const PageContainer = styled.div`
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #f0f5fa;
-`;
-
-const AuthCard = styled.div`
-  width: 448px;
-  background-color: var(--color-white);
-  padding: 40px 30px;
-  border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-`;
-
-const LogoSection = styled.div`
-  text-align: center;
-  margin-bottom: 30px;
-`;
 const TabGroup = styled.div`
   background-color: var(--color-gray-200);
   border-radius: 15px;
   padding: 4px;
   display: flex;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 `;
 
 const TabButton = styled.button`

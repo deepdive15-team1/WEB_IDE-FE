@@ -15,12 +15,6 @@ const AuthLinkContainer = styled.div`
   gap: 15px;
 `;
 
-const VerticalDivider = styled.span`
-  width: 1px;
-  height: 12px;
-  background-color: #ccc;
-`;
-
 function LoginForm() {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -104,10 +98,6 @@ function LoginForm() {
       </form>
 
       <AuthLinkContainer>
-        <Button variant="text" size="md" onClick={() => navigate("/find-id")}>
-          아이디 찾기
-        </Button>
-        <VerticalDivider />
         <Button variant="text" size="md" onClick={() => navigate("/reset-password")}>
           비밀번호 재설정
         </Button>
