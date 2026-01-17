@@ -25,12 +25,12 @@ export const Button = ({
       {...props}
     >
       {/* 아이콘이 텍스트 앞에 있을 때 */}
-      {startIcon && <IconWrapper>{startIcon}</IconWrapper>}
+      {startIcon && <IconWrapper><img src={startIcon} alt={startIcon} /></IconWrapper>}
       <span className="button-text">
         {children}
       </span>
       {/* 아이콘이 텍스트 뒤에 있을 때 */}
-      {endIcon && <IconWrapper>{endIcon}</IconWrapper>}
+      {endIcon && <IconWrapper><img src={endIcon} alt={endIcon} /></IconWrapper>}
     </StyledButton>
   );
 };

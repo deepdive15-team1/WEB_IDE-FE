@@ -52,14 +52,15 @@ import { Input } from '@/components/common/Input/Input';
 
 ### 4. 아이콘과 함께 사용 (With Icons)
 
-`startIcon` 또는 `endIcon` props를 사용하여 인풋 내부에 요소를 배치할 수 있습니다.
+`startIcon` 또는 `endIcon` props에 이미지 경로를 전달합니다. 내부적으로 <img> 태그로 렌더링됩니다.
 
 ```jsx
-import { SearchIcon, EyeIcon } from '@/assets/icons';
+import SearchIcon from '@/assets/icons/search.svg';
+import EyeIcon from '@/assets/icons/eye.svg';
 
 // 1. 앞쪽에 검색 아이콘
 <Input 
-  startIcon={<SearchIcon />} 
+  startIcon={SearchIcon}
   placeholder="검색어를 입력하세요" 
 />
 
@@ -67,7 +68,7 @@ import { SearchIcon, EyeIcon } from '@/assets/icons';
 <Input 
   label="비밀번호"
   type="password"
-  endIcon={<button>보기</button>} 
+  endIcon={EyeIcon}
 />
 ```
 
@@ -110,8 +111,8 @@ const handleFocus = () => {
 | `size` | `'sm' \| 'md' \| 'lg'` | `'md'` | 인풋의 높이와 패딩 크기를 결정합니다. |
 | `variant` | `'primary'` | `'primary'` | 인풋의 디자인 스타일 테마를 결정합니다. |
 | `fullWidth` | `boolean` | `true` | `true`일 경우 가로 너비를 100%로 설정합니다. |
-| `startIcon` | `ReactNode` | - | 인풋 내부 **좌측**에 배치될 아이콘 요소입니다. |
-| `endIcon` | `ReactNode` | - | 인풋 내부 **우측**에 배치될 아이콘 요소입니다. |
+| `startIcon` | `string` | - | 인풋 내부 **좌측** <img>의 src 경로입니다 |
+| `endIcon` | `string` | - | 인풋 내부 **우측** <img>의 src 경로입니다. |
 | `inputRef` | `RefObject` | - | 내부 `<input>` DOM 요소에 접근하기 위한 ref입니다. |
 | `disabled` | `boolean` | `false` | 인풋을 비활성화합니다. |
 | `className` | `string` | - | 외부 스타일 적용을 위한 클래스명입니다. |
