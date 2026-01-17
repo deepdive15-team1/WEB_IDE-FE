@@ -1,71 +1,34 @@
 import Editor from "@monaco-editor/react";
 import styled from "styled-components";
 
-export default function PostCodeEditor() {
+export default function PostCodeEditor({ language, codeText, readOnly, onLineClick }) {
+  // readOnly를 boolean으로 변환 (문자열 "true"도 처리)
+  const isReadOnly = readOnly === true || readOnly === "true";
+
   const handleEditorDidMount = (editor, monaco) => {
-    // CSS 변수 값 가져오기
-    const root = document.documentElement;
-    const getCSSVariable = (varName) => {
-      return getComputedStyle(root).getPropertyValue(varName).trim();
-    };
+    defineCustomTheme(monaco);
+    
+    // 읽기 전용일 때 키보드 입력 완전히 차단
+    if (isReadOnly) {
+      editor.onKeyDown((e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      });
 
-    const colorGray50 = getCSSVariable("--color-gray-50");
-    const colorGray200 = getCSSVariable("--color-gray-200");
-    const colorGray600 = getCSSVariable("--color-gray-600");
-    const colorText = getCSSVariable("--color-text");
-    const colorMain = getCSSVariable("--color-main");
-    const colorWhite = getCSSVariable("--color-white");
-    const colorCompletedText = getCSSVariable("--color-completed-text");
-    const colorAccent = getCSSVariable("--color-accent");
-
-    // 색상에 투명도 추가하는 헬퍼 함수
-    const addOpacity = (color, opacity) => {
-      // RGB 색상을 rgba로 변환
-      if (color.startsWith("#")) {
-        const r = parseInt(color.slice(1, 3), 16);
-        const g = parseInt(color.slice(3, 5), 16);
-        const b = parseInt(color.slice(5, 7), 16);
-        return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+      // 줄 클릭 이벤트 처리 (읽기 전용일 때만)
+      if (onLineClick) {
+        editor.onMouseDown((e) => {
+          const target = e.target;
+          if (target && target.type === monaco.editor.MouseTargetType.GUTTER_LINE_NUMBERS) {
+            const position = editor.getPosition();
+            if (position) {
+              const lineNumber = position.lineNumber;
+              onLineClick(lineNumber);
+            }
+          }
+        });
       }
-      return color;
-    };
-
-    // 커스텀 테마 정의
-    monaco.editor.defineTheme("custom-light", {
-      base: "vs",
-      inherit: true,
-      rules: [
-        { token: "comment", foreground: colorGray600.replace("#", ""), fontStyle: "italic" },
-        { token: "keyword", foreground: colorMain.replace("#", ""), fontStyle: "bold" },
-        { token: "string", foreground: colorCompletedText.replace("#", "") },
-        { token: "number", foreground: colorAccent.replace("#", "") },
-        { token: "type", foreground: colorMain.replace("#", "") },
-        { token: "function", foreground: colorText.replace("#", "") },
-        { token: "variable", foreground: colorText.replace("#", "") },
-      ],
-      colors: {
-        "editor.background": colorGray50,
-        "editor.foreground": colorText,
-        "editor.lineHighlightBackground": colorGray200,
-        "editor.selectionBackground": addOpacity(colorMain, 0.2),
-        "editor.lineNumber.foreground": colorGray600,
-        "editorIndentGuide.background": colorGray200,
-        "editorIndentGuide.activeBackground": colorGray600,
-        "editorCursor.foreground": colorMain,
-        "editorWhitespace.foreground": colorGray200,
-        "editorWidget.background": colorWhite,
-        "editorWidget.border": colorGray200,
-        "editorSuggestWidget.background": colorWhite,
-        "editorSuggestWidget.border": colorGray200,
-        "editorSuggestWidget.selectedBackground": colorGray50,
-        "scrollbarSlider.background": addOpacity(colorGray600, 0.25),
-        "scrollbarSlider.hoverBackground": addOpacity(colorGray600, 0.4),
-        "scrollbarSlider.activeBackground": addOpacity(colorGray600, 0.5),
-      },
-    });
-
-    // 테마 설정
-    monaco.editor.setTheme("custom-light");
+    }
   };
 
   return (
@@ -73,8 +36,8 @@ export default function PostCodeEditor() {
       <Editor
         height="100%"
         width="100%"
-        language="javascript"
-        value="hello"
+        language={language}
+        value={codeText}
         theme="custom-light"
         onMount={handleEditorDidMount}
         options={{
@@ -83,12 +46,13 @@ export default function PostCodeEditor() {
           scrollBeyondLastColumn: 10, // 수평 스크롤 여유 공간 설정
           automaticLayout: true, // 에디터 컨테이너 크기 변경 시 자동 조정
           minimap: {
-            enabled: true, // 미니맵 활성화 여부
+            enabled: false, // 미니맵 활성화 여부
           },
           fontSize: 14, // 글꼴 크기
           lineNumbers: "on", // 줄 번호 표시
-          readOnly: false, // 읽기 전용 아님
-          tabSize: 2, // 탭 크기 설정
+          readOnly: isReadOnly, // 읽기 전용
+          domReadOnly: isReadOnly, // DOM에서도 읽기 전용
+          tabSize: 4, // 탭 크기 설정
           insertSpaces: true, // 탭 입력 시 공백으로 처리
           cursorStyle: "line", // 커서 스타일
           mouseWheelZoom: true, // Ctrl+마우스 휠로 폰트 크기 확대/축소
@@ -98,6 +62,49 @@ export default function PostCodeEditor() {
   );
 }
 
+// CSS 변수 값 가져오기 헬퍼
+const getCSSVar = (varName) => 
+  getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+
+// 모나코 에디터 커스텀 테마 정의 함수
+const defineCustomTheme = (monaco) => {
+  monaco.editor.defineTheme("custom-light", {
+    base: "vs",
+    inherit: true,
+    rules: [
+      // { token: "comment", foreground: getCSSVar("--color-gray-600").replace("#", ""), fontStyle: "italic" },
+      // { token: "keyword", foreground: getCSSVar("--color-main").replace("#", ""), fontStyle: "bold" },
+      // { token: "string", foreground: getCSSVar("--color-completed-text").replace("#", "") },
+      // { token: "number", foreground: getCSSVar("--color-accent").replace("#", "") },
+      // { token: "type", foreground: getCSSVar("--color-main").replace("#", "") },
+      // { token: "function", foreground: getCSSVar("--color-text").replace("#", "") },
+      // { token: "variable", foreground: getCSSVar("--color-text").replace("#", "") },
+    ],
+    colors: {
+      "editor.background": getCSSVar("--color-gray-50"),
+      "editor.foreground": getCSSVar("--color-text"),
+      "editor.lineHighlightBackground": getCSSVar("--color-accent-light"),
+      "editor.selectionBackground": getCSSVar("--color-gray-200"),
+      "editor.lineNumber.foreground": getCSSVar("--color-gray-600"),
+      "editorIndentGuide.background": getCSSVar("--color-gray-200"),
+      "editorIndentGuide.activeBackground": getCSSVar("--color-gray-600"),
+      "editorCursor.foreground": getCSSVar("--color-main"),
+      "editorWhitespace.foreground": getCSSVar("--color-gray-200"),
+      "editorWidget.background": getCSSVar("--color-white"),
+      "editorWidget.border": getCSSVar("--color-gray-200"),
+      "editorSuggestWidget.background": getCSSVar("--color-white"),
+      "editorSuggestWidget.border": getCSSVar("--color-gray-200"),
+      "editorSuggestWidget.selectedBackground": getCSSVar("--color-main"),
+      "scrollbarSlider.background": getCSSVar("--color-gray-600"),
+      "scrollbarSlider.hoverBackground": getCSSVar("--color-gray-600"),
+      "scrollbarSlider.activeBackground": getCSSVar("--color-gray-600"),
+    },
+  });
+
+  // 테마 설정
+  monaco.editor.setTheme("custom-light");
+};
+
 const EditorWrapper = styled.div`
   width: 100%;
   height: 100%;
@@ -105,5 +112,5 @@ const EditorWrapper = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 0;
-  border: 2px solid blue;
 `;
+

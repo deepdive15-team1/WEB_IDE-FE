@@ -47,5 +47,6 @@ const ContentWrapper = styled.article`
   gap: 20px;
   padding: 10px;
   min-height: 0;
-  border: 2px solid blue;
+  overflow-y: auto;
+  overflow-x: hidden;
 `;

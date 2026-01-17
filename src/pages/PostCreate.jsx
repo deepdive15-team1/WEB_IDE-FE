@@ -22,7 +22,7 @@ export default function PostCreate() {
         title="코드 에디터"
         descript="리뷰받고 싶은 코드를 입력하세요."
       >
-        <PostCodeEditor />
+        <PostCodeEditor language="css" codeText="ddddddddd"  readOnly={false} />
       </PostSection>
     </PostPageLayout>
   );
