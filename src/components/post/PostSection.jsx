@@ -15,10 +15,13 @@ export default function PostSection({ title, descript, children }) {
 
 const Contrainer = styled.section`
   flex: 1;
+  display: flex;
+  flex-direction: column;
   background-color: var(--color-bg);
   border: 2px solid var(--color-gray-200);
   border-radius: 12px;
   padding: 16px;
+  min-height: 0;
 `;
 
 const TitleWrapper = styled.header`
@@ -38,8 +41,12 @@ const Descript = styled.div`
 `;
 
 const ContentWrapper = styled.article`
+  flex: 1;
   display: flex;
   flex-direction: column;
   gap: 20px;
   padding: 10px;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
 `;

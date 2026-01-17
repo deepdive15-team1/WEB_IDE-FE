@@ -151,7 +151,6 @@ const SelectDisplay = styled.div`
   outline: none;
   color: var(--color-text);
   min-width: 0;
-  padding-right: 44px; /* 아이콘 영역 확보 (right: 12px + 아이콘 20px + 여유 12px) */
 
   ${({ $disabled }) =>
     $disabled &&
