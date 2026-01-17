@@ -7,6 +7,7 @@ import PostDetail from './pages/PostDetail';
 import './App.css';
 import PasswordResetVerifyPage from './components/auth/accountrecovery/PasswordResetVerifyPage';
 import PasswordResetFormPage from './components/auth/accountrecovery/PasswordResetFormPage';
+import MyPage from './pages/MyPage';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
       <Route path="/post-detail" element={<PostDetail />} />
       <Route path="/reset-password" element={<PasswordResetVerifyPage />} />
       <Route path="/reset-password/update" element={<PasswordResetFormPage />} />
+      <Route path="/mypage" element={<MyPage />} />
     </Routes>
   )
 }
