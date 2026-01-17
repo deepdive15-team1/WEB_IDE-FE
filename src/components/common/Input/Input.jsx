@@ -32,7 +32,7 @@ export const Input = ({
           inputRef?.current?.focus();
         }}
       >
-        {startIcon && <IconWrapper>{startIcon}</IconWrapper>}
+        {startIcon && <IconWrapper><img src={startIcon} alt={startIcon} /></IconWrapper>}
 
         <StyledInput 
           ref={inputRef} 
@@ -42,7 +42,7 @@ export const Input = ({
           {...props} 
         />
 
-        {endIcon && <IconWrapper>{endIcon}</IconWrapper>}
+        {endIcon && <IconWrapper><img src={endIcon} alt={endIcon} /></IconWrapper>}
       </InputContainer>
 
       {errorMessage && <Message $isError={true}>{errorMessage}</Message>}
