@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { authApi } from "../api/auth";
+import { authApi } from "../api/auth/authApi.index";
 
 export const useAuthStore = create(
   persist((set) => ({
@@ -22,5 +22,7 @@ export const useAuthStore = create(
         localStorage.removeItem("refreshToken");
       }
     },
-  })),
+  }),{
+    name: 'auth-storage',
+}),
 );

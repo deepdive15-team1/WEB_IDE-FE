@@ -5,7 +5,7 @@ import { Input } from "../../common/Input/Input";
 import AccountRecoveryLayout from "./components/AccountRecoveryLayout";
 import ResetPasswordLogo from "../../../assets/icons/ResetPasswordLogo.svg"
 import { validatePassword } from "../../../utils/validators";
-import { authApi } from "../../../api/auth";
+import { authApi } from "../../../api/auth/authApi.index";
 
 const PasswordResetFormPage = () => {
   const navigate = useNavigate();
