@@ -17,14 +17,22 @@ export default function PostCreateHeaderContent() {
   const handleSubmit = async () => {
     // getState()로 최신 상태 가져오기 (리렌더링 없음)
     const state = usePostCreateStore.getState();
-    const { title, description, language, codeText } = state;
+    let { title, description, language, codeText } = state;
 
-    console.log("📋 [PostCreateHeader] 현재 상태:", {
-      title,
-      description,
-      language,
-      codeTextLength: codeText.length,
-    });
+    // PostCodeEditor에서 최신 값을 가져오기 (debounce로 인해 스토어에 저장되지 않았을 수 있음)
+    const latestCodeText = state.getLatestCodeText();
+    if (latestCodeText !== codeText) {
+      // console.log("⚠️ [PostCreateHeader] 에디터 값과 스토어 값이 다름, 즉시 저장");
+      state.setCodeTextImmediate(latestCodeText);
+      codeText = latestCodeText;
+    }
+
+    // console.log("📋 [PostCreateHeader] 현재 상태:", {
+    //   title,
+    //   description,
+    //   language,
+    //   codeTextLength: codeText.length,
+    // });
 
     // 유효성 검사
     if (!title.trim()) {
@@ -39,12 +47,12 @@ export default function PostCreateHeaderContent() {
 
     try {
       setIsSubmitting(true);
-      console.log("📤 [PostCreateHeader] createPost API 호출:", {
-        title,
-        description,
-        language,
-        codeTextLength: codeText.length,
-      });
+      // console.log("📤 [PostCreateHeader] createPost API 호출:", {
+      //   title,
+      //   description,
+      //   language,
+      //   codeTextLength: codeText.length,
+      // });
 
       const response = await createPost({
         title,

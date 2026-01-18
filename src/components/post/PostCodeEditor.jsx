@@ -1,11 +1,36 @@
+import { useRef, useEffect } from "react";
 import Editor from "@monaco-editor/react";
 import styled from "styled-components";
+import usePostCreateStore from "../../stores/postCreateStore";
 
-export default function PostCodeEditor({ language, codeText, readOnly, onLineClick, onCodeChange }) {
+// 전역 변수로 최신 에디터 값 저장 (debounce로 인해 스토어에 저장되지 않을 수 있음)
+let latestCodeText = "";
+
+// 전역 함수로 최신 값 가져오기
+if (typeof window !== "undefined") {
+  window.getLatestCodeTextFromEditor = () => latestCodeText;
+}
+
+export default function PostCodeEditor({ language, codeText: codeTextProp, readOnly, onLineClick }) {
   // readOnly를 boolean으로 변환 (문자열 "true"도 처리)
   const isReadOnly = readOnly === true || readOnly === "true";
+  const editorRef = useRef(null);
+
+  // codeText prop이 있으면 사용, 없으면 스토어에서 구독 (PostCreate 리렌더링 방지)
+  const codeTextFromStore = usePostCreateStore((state) => state.codeText);
+  const setCodeTextDebounced = usePostCreateStore((state) => state.setCodeTextDebounced);
+  
+  const codeText = codeTextProp ?? codeTextFromStore;
+
+  // codeText가 변경되면 최신 값 업데이트 (PostCreate에서만)
+  useEffect(() => {
+    if (!codeTextProp) {
+      latestCodeText = codeText;
+    }
+  }, [codeText, codeTextProp]);
 
   const handleEditorDidMount = (editor, monaco) => {
+    editorRef.current = editor;
     defineCustomTheme(monaco);
     
     // 읽기 전용일 때 키보드 입력 완전히 차단
@@ -40,7 +65,15 @@ export default function PostCodeEditor({ language, codeText, readOnly, onLineCli
         value={codeText}
         theme="custom-light"
         onMount={handleEditorDidMount}
-        onChange={onCodeChange ? (value) => onCodeChange(value || "") : undefined}
+        onChange={(value) => {
+          const codeValue = value || "";
+          // 읽기 전용이 아니고 codeText prop이 없을 때만 저장 (PostCreate에서만)
+          if (!isReadOnly && !codeTextProp) {
+            // 최신 값을 전역 변수에 저장 (debounce로 인해 스토어에 저장되지 않을 수 있음)
+            latestCodeText = codeValue;
+            setCodeTextDebounced(codeValue);
+          }
+        }}
         options={{
           wordWrap: "off", // 자동 줄 바꿈 비활성화
           scrollBeyondLastLine: true, // 마지막 줄 이후로 스크롤 가능

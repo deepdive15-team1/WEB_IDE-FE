@@ -8,9 +8,9 @@ import PostDescriptField from "../components/post/PostDescriptField";
 import PostCodeEditor from "../components/post/PostCodeEditor";
 
 export default function PostCreate() {
-  const codeText = usePostCreateStore((state) => state.codeText);
+  // language만 구독 (PostCodeEditor에 전달하기 위해 필요)
+  // codeText는 PostCodeEditor에서 직접 구독하므로 여기서는 구독하지 않음
   const language = usePostCreateStore((state) => state.language);
-  const setCodeTextDebounced = usePostCreateStore((state) => state.setCodeTextDebounced);
 
   return (
     <PostPageLayout postHeader={<PostCreateHeaderContent />}>
@@ -29,8 +29,6 @@ export default function PostCreate() {
       >
         <PostCodeEditor 
           language={language} 
-          codeText={codeText}
-          onCodeChange={setCodeTextDebounced}
           readOnly={false} 
         />
       </PostSection>
