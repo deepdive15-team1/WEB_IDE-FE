@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { authApi } from "../api/auth";
+import { authApi } from "../../../api/auth";
 import { validateEmail, validatePassword } from "../../../utils/validators";
 
 export const useSignup = (onSignupSuccess) => {
@@ -96,19 +96,13 @@ export const useSignup = (onSignupSuccess) => {
     }
 
     try {
-      const checkResult = await authApi.checkEmailDuplicate(form.email);
-      //이메일 중복 검사 (백엔드 구조에 맞춰 수정 예정)
-      if (checkResult.isDuplicate) {
-        setErrors((prev) => ({ ...prev, email: "이미 가입 된 이메일 입니다." }));
-        return;
-      }
-
       await authApi.sendVerificationCode(form.email);
       setStatus((prev) => ({ ...prev, isEmailSent: true }));
       alert("인증번호가 전송되었습니다. 이메일을 확인해주세요.");
     } catch (err) {
       console.error(err);
-      setErrors((prev) => ({ ...prev, email: "인증번호 전송에 실패하였습니다" }));
+      const errorMessage = err.response?.data?.message || "인증번호 전송에 실패하였습니다";
+      setErrors((prev) => ({ ...prev, email: errorMessage }));
     }
   };
 
@@ -116,18 +110,18 @@ export const useSignup = (onSignupSuccess) => {
   const handleVerifyCode = async () => {
     if (!form.verificationCode) return;
 
+    setErrors((prev) => ({ ...prev, verification: "" }));
+
     try {
-      const result = await authApi.verifyEmailCode(form.email, form.verificationCode);
-      if (result.success) {
-        setStatus((prev) => ({ ...prev, isEmailVerified: true }));
-        setErrors((prev) => ({ ...prev, verification: "" }));
-        alert("이메일 인증이 완료되었습니다.");
-      } else {
-        setErrors((prev) => ({ ...prev, verification: "인증번호가 올바르지 않습니다." }));
-      }
+      await authApi.verifyEmailCode(form.email, form.verificationCode);
+
+      setStatus((prev) => ({ ...prev, isEmailVerified: true }));
+      alert("이메일 인증이 완료되었습니다.");
+
     } catch (err) {
       console.error(err);
-      setErrors((prev) => ({ ...prev, verification: "인증 확인 중 오류가 발생했습니다" }));
+      const errorMessage = err.response?.data?.message || "인증번호가 올바르지 않습니다.";
+      setErrors((prev) => ({ ...prev, verification: errorMessage }));
     }
   };
 
@@ -147,24 +141,22 @@ export const useSignup = (onSignupSuccess) => {
 
     setStatus((prev) => ({ ...prev, isSubmitting: true }));
 
-    const { email, nickname, password } = form;
-
     try {
-      const userData = {
-        email,
-        nickname,
-        password,
-      };
-
-      await authApi.signup(userData);
-      alert(nickname + "님 가입을 축하합니다");
+      // 회원가입 요청
+      await authApi.signup({
+        email: form.email,
+        nickname: form.nickname,
+        password: form.password,
+      });
+      alert(form.nickname + "님 가입을 축하합니다");
 
       if (onSignupSuccess) {
         onSignupSuccess();
       }
     } catch (err) {
       console.error(err);
-      alert("회원가입 중 오류가 발생하였습니다");
+      const errorMessage = err.response?.data?.message || "회원가입 중 오류가 발생하였습니다"
+      alert(errorMessage);
     } finally {
       setStatus((prev) => ({ ...prev, isSubmitting: false }));
     }
