@@ -20,10 +20,16 @@ export default function PostList() {
       : content.filter((post) => post.status === filter);
 
   useEffect(() => {
-    getOpenPosts(0, 50).then((data) => {
-      console.log(data.content);
-      setContent(data.content ?? []);
-    });
+    const fetchOpenPosts = async () => {
+      try {
+        const data = await getOpenPosts(0, 20);
+        setContent(data.content ?? []);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchOpenPosts();
   }, []);
 
   const handlePostClick = (postId) => {
@@ -37,9 +43,12 @@ export default function PostList() {
       <MainContainer>
         <PostListHeader />
 
-        <PostListFilter activeFilter={filter} onFilterChange={setFilter}/>
+        <PostListFilter activeFilter={filter} onFilterChange={setFilter} />
 
-        <PostListContent posts={filteredContent} onPostClick={handlePostClick} />
+        <PostListContent
+          posts={filteredContent}
+          onPostClick={handlePostClick}
+        />
       </MainContainer>
     </Container>
   );
@@ -65,5 +74,3 @@ const MainContainer = styled.main`
   overflow-y: auto;
   min-height: 0;
 `;
-
-

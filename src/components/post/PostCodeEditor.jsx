@@ -1,7 +1,7 @@
 import Editor from "@monaco-editor/react";
 import styled from "styled-components";
 
-export default function PostCodeEditor({ language, codeText, readOnly, onLineClick }) {
+export default function PostCodeEditor({ language, codeText, readOnly, onLineClick, onCodeChange }) {
   // readOnly를 boolean으로 변환 (문자열 "true"도 처리)
   const isReadOnly = readOnly === true || readOnly === "true";
 
@@ -40,6 +40,7 @@ export default function PostCodeEditor({ language, codeText, readOnly, onLineCli
         value={codeText}
         theme="custom-light"
         onMount={handleEditorDidMount}
+        onChange={onCodeChange ? (value) => onCodeChange(value || "") : undefined}
         options={{
           wordWrap: "off", // 자동 줄 바꿈 비활성화
           scrollBeyondLastLine: true, // 마지막 줄 이후로 스크롤 가능
