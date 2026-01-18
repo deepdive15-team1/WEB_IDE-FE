@@ -27,7 +27,7 @@ export default function PostCard({ post, onClick }) {
           textColor="var(--color-gray-600)"
           icon={profileIcon}
         >
-          {post.nickname}
+          {post.authorNickname}
         </Chip>
         <Chip
           bgColor="var(--color-bg)"

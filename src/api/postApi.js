@@ -9,10 +9,12 @@ import { axiosInstance } from "./axiosInstance";
  * @returns {Promise<Object>} response.content[].postId - 포스트 ID
  * @returns {Promise<Object>} response.content[].title - 게시글 제목
  * @returns {Promise<Object>} response.content[].description - 게시글 설명
- * @returns {Promise<Object>} response.content[].nickname - 작성자 닉네임
  * @returns {Promise<Object>} response.content[].language - 프로그래밍 언어 (예: "JAVA", "JAVASCRIPT", "PYTHON" 등)
  * @returns {Promise<Object>} response.content[].status - 포스트 상태 ("OPEN" | "COMPLETED")
+ * @returns {Promise<Object>} response.content[].authorId - 작성자 ID
+ * @returns {Promise<Object>} response.content[].authorNickname - 작성자 닉네임
  * @returns {Promise<Object>} response.content[].createdAt - 생성 일시 (ISO 8601 형식)
+ * @returns {Promise<Object>} response.content[].updatedAt - 수정 일시 (ISO 8601 형식)
  * @returns {Promise<Object>} response.page - 현재 페이지 번호
  * @returns {Promise<Object>} response.size - 페이지 크기
  * @returns {Promise<Object>} response.totalElements - 전체 항목 수
