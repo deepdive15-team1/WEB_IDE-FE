@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { authApi } from "../../../api/auth";
+import { authApi } from "../../../api/auth/authApi.index";
 import { validateEmail, validatePassword } from "../../../utils/validators";
 
 export const useSignup = (onSignupSuccess) => {
@@ -134,7 +134,7 @@ export const useSignup = (onSignupSuccess) => {
       return;
     }
     // 에러가 하나라도 있으면 제출 불가
-    if (errors.email || errors.password || errors.confirmPassword || !form.email || !form.password || !form.nickname) {
+    if (errors.email || errors.password || errors.confirmPassword || !form.email || !form.password || !form.nickname || !form.confirmPassword) {
       alert("입력 정보를 다시 확인해주세요.");
       return;
     }
