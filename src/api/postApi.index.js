@@ -15,6 +15,11 @@ import { completePost as mockCompletePost } from "./../api/postApi.mock";
 import { completePost as realCompletePost } from "./../api/postApi";
 export const completePost = isMock ? mockCompletePost : realCompletePost;
 
+// 포스트 코드 수정 API
+import { updatePostCode as mockUpdatePostCode } from "./../api/postApi.mock";
+import { updatePostCode as realUpdatePostCode } from "./../api/postApi";
+export const updatePostCode = isMock ? mockUpdatePostCode : realUpdatePostCode;
+
 // 포스트 리스트 조회 API
 import { getOpenPosts as mockGetPosts } from "./../api/postApi.mock";
 import { getOpenPosts as realGetPosts } from "./../api/postApi";

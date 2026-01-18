@@ -78,3 +78,19 @@ export const completePost = async (postId) => {
 
   return response.data;
 };
+
+/**
+ * 포스트 코드 수정 API
+ * @param {number} postId - 포스트 ID
+ * @param {Object} requestBody - 코드 수정 요청 데이터
+ * @param {string} requestBody.codeText - 수정할 코드 내용
+ * @returns {Promise<Object>} 수정된 포스트 정보
+ * @returns {Promise<Object>} response.postId - 포스트 ID
+ * @returns {Promise<Object>} response.codeText - 수정된 코드 내용
+ * @returns {Promise<Object>} response.codeUpdatedAt - 코드 수정 일시 (ISO 8601 형식)
+ */
+export const updatePostCode = async (postId, requestBody) => {
+  const response = await axiosInstance.put(`/posts/${postId}/code`, requestBody);
+
+  return response.data;
+};

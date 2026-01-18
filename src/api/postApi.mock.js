@@ -209,3 +209,15 @@ export const completePost = async (postId) => {
     completedAt: new Date().toISOString(),
   };
 };
+
+export const updatePostCode = async (postId, requestBody) => {
+  // 개발용 지연 시뮬레이션
+  await new Promise((resolve) => setTimeout(resolve, 500));
+
+  // 성공 응답 반환
+  return {
+    postId: Number(postId),
+    codeText: requestBody.codeText || "",
+    codeUpdatedAt: new Date().toISOString(),
+  };
+};
