@@ -4,8 +4,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../common/Button/Button";
 import { Input } from "../../common/Input/Input";
-import { authApi } from "../api/auth";
+import { authApi } from "../../../api/auth";
 import { validateEmail, validatePassword } from "../../../utils/validators";
+import { useAuthStore } from "../../../stores/useAuthStore";
 
 const AuthLinkContainer = styled.div`
   display: flex;
@@ -15,15 +16,15 @@ const AuthLinkContainer = styled.div`
   gap: 15px;
 `;
 
-function LoginForm() {
+export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  //제출 상태
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const navigate = useNavigate();
+  const setLogin = useAuthStore((state) => state.setLogin);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -61,10 +62,15 @@ function LoginForm() {
 
     try {
       await authApi.login({ email, password });
-      alert("로그인 되었습니다");
-      navigate("/main");
+      const userData = await authApi.getMe();
+
+      setLogin(userData);
+      
+      navigate("/post-list");
+    
     } catch (err) {
-      alert(err.message);
+      const errorMessage = err.response?.data?.message || '로그인에 실패하였습니다';
+      alert(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
@@ -92,7 +98,11 @@ function LoginForm() {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <Button fullWidth type="submit" disabled={isSubmitting}>
+        <Button 
+          fullWidth type="submit" 
+          disabled={isSubmitting} 
+          style={{marginTop: '15px'}}
+        >
           {isSubmitting ? "로그인 중" : "로그인"}
         </Button>
       </form>
@@ -105,5 +115,3 @@ function LoginForm() {
     </>
   );
 }
-
-export default LoginForm;

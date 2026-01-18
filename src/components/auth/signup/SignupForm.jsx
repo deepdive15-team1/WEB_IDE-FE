@@ -62,7 +62,12 @@ const { form, status, errors, handlers } = useSignup(onSignupSuccess);
         errorMessage={errors.confirmPassword}
       />
 
-      <Button fullWidth disabled={status.isSubmitting || !status.isEmailVerified} type="submit">
+      <Button 
+        fullWidth 
+        disabled={status.isSubmitting || !status.isEmailVerified} 
+        type="submit"
+        style={{marginTop: '15px'}}
+      >
         {status.isSubmitting ? "회원가입 중" : "회원가입"}
       </Button>
     </form>
