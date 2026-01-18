@@ -12,21 +12,21 @@ export default function PostDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        setLoading(true);
-        const data = await getPost(Number(postId));
-        setPost(data);
-      } catch (err) {
-        console.error("포스트 상세 조회 실패:", err);
-        setError(err);
-        alert("포스트를 불러오는데 실패했습니다. 다시 시도해주세요.");
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchPost = async () => {
+    try {
+      setLoading(true);
+      const data = await getPost(Number(postId));
+      setPost(data);
+    } catch (err) {
+      console.error("포스트 상세 조회 실패:", err);
+      setError(err);
+      alert("포스트를 불러오는데 실패했습니다. 다시 시도해주세요.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     if (postId) {
       fetchPost();
     }
@@ -44,7 +44,7 @@ export default function PostDetail() {
   const editorLanguage = post.language?.toLowerCase() || "javascript";
 
   return (
-    <PostPageLayout postHeader={<PostDetailHeaderContent post={post} />}>
+    <PostPageLayout postHeader={<PostDetailHeaderContent post={post} onPostUpdate={fetchPost} />}>
       <PostSection
         title="코드"
         descript="줄 번호를 클릭하여 해당 줄에 대한 댓글을 작성할 수 있습니다."

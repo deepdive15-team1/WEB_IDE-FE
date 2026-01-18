@@ -119,12 +119,8 @@ export const getOpenPosts = async (page, size) => {
   };
 };
 
-export const getPost = async (postId) => {
-  // 개발용 지연 시뮬레이션
-  await new Promise((resolve) => setTimeout(resolve, 500));
-
-  // postId에 따라 다른 데이터 반환 (예시)
-  const postData = {
+// 목데이터를 메모리에 저장하여 수정 시 반영되도록 함
+const mockPostData = {
     10: {
       postId: 10,
       authorId: 3,
@@ -166,9 +162,13 @@ export const getPost = async (postId) => {
     },
   };
 
+export const getPost = async (postId) => {
+  // 개발용 지연 시뮬레이션
+  await new Promise((resolve) => setTimeout(resolve, 500));
+
   // 해당 postId의 데이터가 있으면 반환, 없으면 기본값 반환
   return (
-    postData[postId] || {
+    mockPostData[postId] || {
       postId: postId,
       authorId: 1,
       authorNickname: "default_user",
@@ -201,6 +201,12 @@ export const createPost = async (requestBody) => {
 export const completePost = async (postId) => {
   // 개발용 지연 시뮬레이션
   await new Promise((resolve) => setTimeout(resolve, 500));
+
+  // 목데이터 업데이트 (다음 getPost 호출 시 완료 상태가 반영됨)
+  if (mockPostData[postId]) {
+    mockPostData[postId].status = "COMPLETED";
+    mockPostData[postId].completedAt = new Date().toISOString();
+  }
 
   // 성공 응답 반환
   return {

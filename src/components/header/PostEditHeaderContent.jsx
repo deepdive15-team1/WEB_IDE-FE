@@ -2,22 +2,20 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Button } from "../common/Button/Button";
 import usePostCreateStore from "../../stores/postCreateStore";
-import { createPost } from "../../api/postApi.index";
+import { updatePostCode } from "../../api/postApi.index";
 
 import styled from "styled-components";
 import backIcon from "../../assets/back.svg";
-import storeIcon from "../../assets/store.svg";
+import checkIcon from "../../assets/check.svg";
 
-export default function PostCreateHeaderContent() {
+export default function PostEditHeaderContent({ postId }) {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
   
-  // getState()를 사용하여 리렌더링 없이 최신 상태 가져오기
-  // 버튼 클릭 시에만 호출되므로 성능 최적화
   const handleSubmit = async () => {
     // getState()로 최신 상태 가져오기 (리렌더링 없음)
     const state = usePostCreateStore.getState();
-    let { title, description, language, codeText } = state;
+    let { codeText } = state;
 
     // PostCodeEditor에서 최신 값을 가져오기 (debounce로 인해 스토어에 저장되지 않았을 수 있음)
     const latestCodeText = state.getLatestCodeText();
@@ -27,11 +25,6 @@ export default function PostCreateHeaderContent() {
     }
 
     // 유효성 검사
-    if (!title.trim()) {
-      alert("제목을 입력해주세요.");
-      return;
-    }
-
     if (!codeText.trim()) {
       alert("코드를 입력해주세요.");
       return;
@@ -40,18 +33,13 @@ export default function PostCreateHeaderContent() {
     try {
       setIsSubmitting(true);
 
-      const response = await createPost({
-        title,
-        description,
-        language,
-        codeText,
-      });
-
-      // 성공 시 스토어 초기화 및 페이지 이동
-      usePostCreateStore.getState().reset();
-      navigate(`/post-detail/${response.postId}`);
+      // 코드 수정 API 호출
+      await updatePostCode(postId, { codeText });
+      
+      // 성공 시 상세 페이지로 이동
+      navigate(`/post-detail/${postId}`);
     } catch (error) {
-      alert("게시글 생성에 실패했습니다. 다시 시도해주세요.");
+      alert("코드 수정에 실패했습니다. 다시 시도해주세요.");
     } finally {
       setIsSubmitting(false);
     }
@@ -69,18 +57,18 @@ export default function PostCreateHeaderContent() {
 
       <Wrapper>
         <Content>
-          <Title>새 게시글 작성</Title>
-          <Descript>코드 리뷰를 받고 싶은 코드를 공유하세요.</Descript>
+          <Title>코드 수정</Title>
+          <Descript>코드를 수정하세요.</Descript>
         </Content>
 
         <Button 
           variant="primary" 
           size="md" 
-          startIcon={storeIcon}
+          startIcon={checkIcon}
           onClick={handleSubmit}
           disabled={isSubmitting}
         >
-          {isSubmitting ? "생성 중..." : "게시글 생성"}
+          {isSubmitting ? "수정 중..." : "수정 완료"}
         </Button>
       </Wrapper>
     </Container>
@@ -134,6 +122,7 @@ const Title = styled.div`
   min-width: 0;
   flex-shrink: 1;
 `;
+
 const Descript = styled.div`
   color: var(--color-gray-600);
   font-size: 14px;

@@ -1,7 +1,7 @@
 import Textarea from "../common/Textarea/Textarea";
 import usePostCreateStore from "../../stores/postCreateStore";
 
-export default function PostDescriptField() {
+export default function PostDescriptField({ disabled = false }) {
   // description과 setDescription만 선택적 구독
   const description = usePostCreateStore((state) => state.description);
   const setDescription = usePostCreateStore((state) => state.setDescription);
@@ -13,6 +13,7 @@ export default function PostDescriptField() {
       name="content"
       value={description}
       onChange={(e) => setDescription(e.target.value)}
+      disabled={disabled}
     />
   );
 }

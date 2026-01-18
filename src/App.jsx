@@ -26,6 +26,7 @@ function App() {
     <Routes>
       <Route path="/" element={<AuthPage />} />  
       <Route path="/post-create" element={<PostCreate />} />
+      <Route path="/post-edit/:postId" element={<PostCreate />} />
       <Route path="/post-detail/:postId" element={<PostDetail />} />
       <Route path="/post-list" element={<PostList />} />
       <Route path="/reset-password" element={<PasswordResetVerifyPage />} />
