@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../common/Button/Button";
 import { Input } from "../../common/Input/Input";
-import { authApi } from "../api/auth";
+import { authApi } from "../../../api/auth";
 import { validateEmail, validatePassword } from "../../../utils/validators";
 
 const AuthLinkContainer = styled.div`
@@ -61,10 +61,12 @@ function LoginForm() {
 
     try {
       await authApi.login({ email, password });
-      alert("로그인 되었습니다");
-      navigate("/main");
+      
+      navigate("/post-list");
+    
     } catch (err) {
-      alert(err.message);
+      const errorMessage = err.response?.data?.message || '로그인에 실패하였습니다';
+      alert(errorMessage);
     } finally {
       setIsSubmitting(false);
     }
@@ -92,7 +94,11 @@ function LoginForm() {
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <Button fullWidth type="submit" disabled={isSubmitting}>
+        <Button 
+          fullWidth type="submit" 
+          disabled={isSubmitting} 
+          style={{marginTop: '15px'}}
+        >
           {isSubmitting ? "로그인 중" : "로그인"}
         </Button>
       </form>
