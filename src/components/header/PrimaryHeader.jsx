@@ -96,7 +96,7 @@ const LogoNav = styled.div`
     text-overflow: ellipsis;
     min-width: 0;
 
-    @media (max-width: 480px) {
+    @media (max-width: 620px) {
       display: none;
     }
   }
