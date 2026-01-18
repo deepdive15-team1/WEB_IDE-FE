@@ -104,7 +104,7 @@ export const createPost = async (requestBody) => {
   // 개발용 지연 시뮬레이션
   await new Promise((resolve) => setTimeout(resolve, 1000));
   
-  console.log("[Mock API] 포스트 생성 요청:", requestBody);
+  // console.log("[Mock API] 포스트 생성 요청:", requestBody);
   
   // 성공 응답 반환
   return {

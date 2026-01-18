@@ -29,32 +29,51 @@ const usePostCreateStore = create(
       // 제목, 설명, 언어는 즉시 반영
       // 코드는 내부적으로 debounce 처리
       setTitle: (title) => {
-        console.log("📝 [Store] title 변경:", title);
+        // console.log("📝 [Store] title 변경:", title);
         set({ title });
       },
       setDescription: (description) => {
-        console.log("📝 [Store] description 변경:", description);
+        // console.log("📝 [Store] description 변경:", description);
         set({ description });
       },
       setLanguage: (language) => {
-        console.log("📝 [Store] language 변경:", language);
+        // console.log("📝 [Store] language 변경:", language);
         set({ language });
       },
 
       setCodeTextDebounced: debounce((codeText) => {
-        console.log("💻 [Store] codeText 변경 (debounced):", codeText.substring(0, 50) + (codeText.length > 50 ? "..." : ""));
+        // console.log("💻 [Store] codeText 변경 (debounced):", codeText.substring(0, 50) + (codeText.length > 50 ? "..." : ""));
         set({ codeText });
       }, 3000),
 
+      // debounce 없이 즉시 저장 (버튼 클릭 시 사용)
+      setCodeTextImmediate: (codeText) => {
+        // console.log("💻 [Store] codeText 즉시 저장:", codeText.substring(0, 50) + (codeText.length > 50 ? "..." : ""));
+        set({ codeText });
+      },
+
+      // 최신 에디터 값 가져오기 (PostCodeEditor의 전역 변수에서)
+      getLatestCodeText: () => {
+        if (typeof window !== "undefined" && window.getLatestCodeTextFromEditor) {
+          return window.getLatestCodeTextFromEditor();
+        }
+        return get().codeText;
+      },
+
       // 모든 상태를 한 번에 초기화하는 함수
       reset: () => {
-        console.log("🔄 [Store] 모든 상태 초기화");
+        // console.log("🔄 [Store] 모든 상태 초기화 및 localStorage 삭제");
         set({
           title: "",
           description: "",
           language: "javascript",
           codeText: "",
         });
+        
+        // localStorage에서도 명시적으로 삭제
+        if (typeof window !== "undefined") {
+          localStorage.removeItem("post-create-store");
+        }
       },
     }),
     {
