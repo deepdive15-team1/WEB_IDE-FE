@@ -1,3 +1,4 @@
+import usePostCreateStore from "../stores/postCreateStore";
 import PostPageLayout from "../components/post/PostPageLayout";
 import PostCreateHeaderContent from "../components/header/PostCreateHeaderContent";
 import PostSection from "../components/post/PostSection";
@@ -7,6 +8,10 @@ import PostDescriptField from "../components/post/PostDescriptField";
 import PostCodeEditor from "../components/post/PostCodeEditor";
 
 export default function PostCreate() {
+  const codeText = usePostCreateStore((state) => state.codeText);
+  const language = usePostCreateStore((state) => state.language);
+  const setCodeTextDebounced = usePostCreateStore((state) => state.setCodeTextDebounced);
+
   return (
     <PostPageLayout postHeader={<PostCreateHeaderContent />}>
       <PostSection
@@ -22,7 +27,12 @@ export default function PostCreate() {
         title="코드 에디터"
         descript="리뷰받고 싶은 코드를 입력하세요."
       >
-        <PostCodeEditor language="css" codeText="ddddddddd"  readOnly={false} />
+        <PostCodeEditor 
+          language={language} 
+          codeText={codeText}
+          onCodeChange={setCodeTextDebounced}
+          readOnly={false} 
+        />
       </PostSection>
     </PostPageLayout>
   );
