@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../common/Button/Button";
 import { Input } from "../../common/Input/Input";
-import { authApi } from "../../../api/auth";
+import { authApi } from "../../../api/auth/authApi.index";
 import { validateEmail, validatePassword } from "../../../utils/validators";
 import { useAuthStore } from "../../../stores/useAuthStore";
 
@@ -24,7 +24,7 @@ export default function LoginForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const navigate = useNavigate();
-  const setLogin = useAuthStore((state) => state.setLogin);
+  const setLogin = useAuthStore((state) => state.Login);
 
   const handleLogin = async (e) => {
     e.preventDefault();

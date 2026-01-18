@@ -5,7 +5,7 @@ import ResetPasswordLogo from "../../../assets/icons/ResetPasswordLogo.svg";
 import AccountRecoveryLayout from "./components/AccountRecoveryLayout";
 import Back from "../../../assets/Back.svg";
 import { useNavigate } from "react-router-dom";
-import { authApi } from "../../../api/auth";
+import { authApi } from "../../../api/auth/authApi.index";
 
 const PasswordResetVerifyPage = () => {
 
