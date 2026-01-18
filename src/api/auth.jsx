@@ -35,6 +35,21 @@ export const authApi = {
     return response.data;
   },
 
+  // 로그아웃
+  logout: async() => {
+    const refreshToken = localStorage.getItem("refreshToken");
+    await axiosInstance.post(`/auth/logout`, { refreshToken });
+  },
+
+  // 내 정보 조회
+  getMe: async () => {
+    const response = await axiosInstance.get(`/auth/me`); 
+
+    return response.data; 
+  },
+
+
+  
   // 비밀번호 재설정 발급
   sendPasswordResetCode: async (email) => {
     // [TODO] 명세 확정 시 주석 해제 및 Body 수정 필요

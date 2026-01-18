@@ -3,7 +3,7 @@ import axios from "axios";
 const BASE_URL = import.meta.env.VITE_API_BASE_URL // 추후 .env 설정
 
 export const axiosInstance = axios.create({
-  baseURL: BASE_URL, // 추후 .env 설정
+  baseURL: BASE_URL,
   headers: { "Content-Type": "application/json" },
   timeout: 10000
 });
@@ -17,7 +17,9 @@ axiosInstance.interceptors.request.use(
     }
     return config;
   },
-  (err) => Promise.reject(err),
+  (err) => {
+    return Promise.reject(err);
+  }
 );
 
 //응답 인터셉터
@@ -45,12 +47,16 @@ axiosInstance.interceptors.response.use(
 
         originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
         return axiosInstance(originalRequest);
+
       } catch (refreshError) {
         console.error("토큰 재발급 실패:", refreshError);
+
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
+
         alert("로그인이 만료되었습니다. 다시 로그인해주세요.");
         window.location.href = "/";
+
         return Promise.reject(refreshError);
       }
     }
