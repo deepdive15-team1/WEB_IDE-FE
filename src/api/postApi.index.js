@@ -10,6 +10,11 @@ import { createPost as mockCreatePost } from "./../api/postApi.mock";
 import { createPost as realCreatePost } from "./../api/postApi";
 export const createPost = isMock ? mockCreatePost : realCreatePost;
 
+// 포스트 리뷰 완료 처리 API
+import { completePost as mockCompletePost } from "./../api/postApi.mock";
+import { completePost as realCompletePost } from "./../api/postApi";
+export const completePost = isMock ? mockCompletePost : realCompletePost;
+
 // 포스트 리스트 조회 API
 import { getOpenPosts as mockGetPosts } from "./../api/postApi.mock";
 import { getOpenPosts as realGetPosts } from "./../api/postApi";

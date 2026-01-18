@@ -197,3 +197,15 @@ export const createPost = async (requestBody) => {
     createdAt: new Date().toISOString(),
   };
 };
+
+export const completePost = async (postId) => {
+  // 개발용 지연 시뮬레이션
+  await new Promise((resolve) => setTimeout(resolve, 500));
+
+  // 성공 응답 반환
+  return {
+    postId: Number(postId),
+    status: "COMPLETED",
+    completedAt: new Date().toISOString(),
+  };
+};

@@ -64,3 +64,17 @@ export const createPost = async (requestBody) => {
 
   return response.data;
 };
+
+/**
+ * 포스트 리뷰 완료 처리 API
+ * @param {number} postId - 포스트 ID
+ * @returns {Promise<Object>} 완료 처리된 포스트 정보
+ * @returns {Promise<Object>} response.postId - 포스트 ID
+ * @returns {Promise<Object>} response.status - 포스트 상태 ("COMPLETED")
+ * @returns {Promise<Object>} response.completedAt - 완료 일시 (ISO 8601 형식)
+ */
+export const completePost = async (postId) => {
+  const response = await axiosInstance.post(`/posts/${postId}/complete`);
+
+  return response.data;
+};
