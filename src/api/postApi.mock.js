@@ -119,13 +119,77 @@ export const getOpenPosts = async (page, size) => {
   };
 };
 
-// postApi.mock.js에 추가할 코드
+export const getPost = async (postId) => {
+  // 개발용 지연 시뮬레이션
+  await new Promise((resolve) => setTimeout(resolve, 500));
+
+  // postId에 따라 다른 데이터 반환 (예시)
+  const postData = {
+    10: {
+      postId: 10,
+      authorId: 3,
+      authorNickname: "backend_master",
+      title: "이 코드 리뷰 부탁해요",
+      description: "리팩토링 방향이 맞는지 봐주세요",
+      language: "JAVA",
+      status: "OPEN",
+      codeText: "public class A {\n    private String name;\n    \n    public A(String name) {\n        this.name = name;\n    }\n    \n    public String getName() {\n        return name;\n    }\n}",
+      createdAt: "2026-01-14T15:30:12.123+09:00",
+      completedAt: null,
+      roomId: null,
+    },
+    9: {
+      postId: 9,
+      authorId: 1,
+      authorNickname: "frontend_dev",
+      title: "리액트 상태 관리 질문",
+      description: "Context API와 Zustand 중 어떤 선택이 더 나을지 고민입니다.",
+      language: "JAVASCRIPT",
+      status: "OPEN",
+      codeText: "import { useState } from 'react';\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n  \n  return (\n    <div>\n      <p>Count: {count}</p>\n      <button onClick={() => setCount(count + 1)}>Increment</button>\n    </div>\n  );\n}",
+      createdAt: "2026-01-14T14:10:45.456+09:00",
+      completedAt: null,
+      roomId: null,
+    },
+    8: {
+      postId: 8,
+      authorId: 3,
+      authorNickname: "backend_master",
+      title: "Spring Security 설정 관련 문의",
+      description: "JWT 기반 인증 설정 중 막히는 부분이 있습니다.",
+      language: "JAVA",
+      status: "COMPLETED",
+      codeText: "@Configuration\n@EnableWebSecurity\npublic class SecurityConfig {\n    // Security configuration code here\n}",
+      createdAt: "2026-01-13T22:05:10.789+09:00",
+      completedAt: "2026-01-15T10:20:30.123+09:00",
+      roomId: 1,
+    },
+  };
+
+  // 해당 postId의 데이터가 있으면 반환, 없으면 기본값 반환
+  return (
+    postData[postId] || {
+      postId: postId,
+      authorId: 1,
+      authorNickname: "default_user",
+      title: "기본 게시글",
+      description: "기본 설명",
+      language: "JAVASCRIPT",
+      status: "OPEN",
+      codeText: "// 기본 코드",
+      createdAt: new Date().toISOString(),
+      completedAt: null,
+      roomId: null,
+    }
+  );
+};
+
 export const createPost = async (requestBody) => {
   // 개발용 지연 시뮬레이션
   await new Promise((resolve) => setTimeout(resolve, 1000));
-  
+
   // console.log("[Mock API] 포스트 생성 요청:", requestBody);
-  
+
   // 성공 응답 반환
   return {
     postId: Math.floor(Math.random() * 1000) + 1,

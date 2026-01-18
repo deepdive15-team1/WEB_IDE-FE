@@ -29,6 +29,28 @@ export const getOpenPosts = async (page, size) => {
 };
 
 /**
+ * 포스트 상세 조회 API
+ * @param {number} postId - 포스트 ID
+ * @returns {Promise<Object>} 포스트 상세 정보
+ * @returns {Promise<Object>} response.postId - 포스트 ID
+ * @returns {Promise<Object>} response.authorId - 작성자 ID
+ * @returns {Promise<Object>} response.authorNickname - 작성자 닉네임
+ * @returns {Promise<Object>} response.title - 게시글 제목
+ * @returns {Promise<Object>} response.description - 게시글 설명
+ * @returns {Promise<Object>} response.language - 프로그래밍 언어 (예: "JAVA", "JAVASCRIPT", "PYTHON" 등)
+ * @returns {Promise<Object>} response.status - 포스트 상태 ("OPEN" | "COMPLETED")
+ * @returns {Promise<Object>} response.codeText - 코드 내용
+ * @returns {Promise<Object>} response.createdAt - 생성 일시 (ISO 8601 형식)
+ * @returns {Promise<Object>} response.completedAt - 완료 일시 (ISO 8601 형식 또는 null)
+ * @returns {Promise<Object>} response.roomId - 채팅방 ID (또는 null)
+ */
+export const getPost = async (postId) => {
+  const response = await axiosInstance.get(`/posts/${postId}`);
+
+  return response.data;
+};
+
+/**
  * 포스트 생성 API
  * @param {Object} requestBody - 포스트 생성 요청 데이터
  * @param {string} requestBody.title - 게시글 제목

@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "../common/Button/Button";
 import Chip from "../common/Chip/Chip";
+import { formatDate } from "../../utils/formatDate";
 
 import styled from "styled-components";
 import backIcon from "../../assets/back.svg";
@@ -8,12 +9,16 @@ import profileIcon from "../../assets/profile.svg";
 import calendarIcon from "../../assets/calendar.svg";
 import checkIcon from "../../assets/check.svg";
 
-export default function PostDetailHeaderContent() {
+export default function PostDetailHeaderContent({ post }) {
   const navigate = useNavigate();
 
   const handleBack = () => {
     navigate(-1);
   };
+
+  if (!post) {
+    return null;
+  }
 
   return (
     <Container>
@@ -24,9 +29,11 @@ export default function PostDetailHeaderContent() {
       <Wrapper>
         <Content>
           <TitleContainer>
-            <Title>게시글 제목ooooooooooo</Title>
-            <Chip variant="completed">진행중</Chip>
-            <Chip variant="language">JavaScript</Chip>
+            <Title>{post.title}</Title>
+            <Chip variant={post.status === "OPEN" ? "ongoing" : "completed"}>
+              {post.status === "OPEN" ? "진행중" : "완료"}
+            </Chip>
+            {post.language && <Chip variant="language">{post.language}</Chip>}
           </TitleContainer>
 
           <PostInfoContainer>
@@ -35,21 +42,18 @@ export default function PostDetailHeaderContent() {
               bgColor="var(--color-bg)"
               textColor="var(--color-gray-600)"
             >
-              사용자 이름
+              {post.authorNickname}
             </Chip>
             <Chip
               icon={calendarIcon}
               bgColor="var(--color-bg)"
               textColor="var(--color-gray-600)"
             >
-              2025.01.03.(추후 api)
+              {formatDate(post.createdAt)}
             </Chip>
           </PostInfoContainer>
 
-          <Descript>
-            처음 React를 배우고 있는데, useState를 사용하는 제 코드가 맞는지
-            확인 부탁드립니다. 특히 상태 업데이트 부분이 궁금합니다.
-          </Descript>
+          {post.description && <Descript>{post.description}</Descript>}
         </Content>
 
         {/* 추후 게시글 생성 api와 연결 */}

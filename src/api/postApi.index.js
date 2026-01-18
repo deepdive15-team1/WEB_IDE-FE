@@ -1,5 +1,10 @@
 const isMock = import.meta.env.VITE_USE_MOCK === "true";
 
+// 포스트 상세 조회 API
+import { getPost as mockGetPost } from "./../api/postApi.mock";
+import { getPost as realGetPost } from "./../api/postApi";
+export const getPost = isMock ? mockGetPost : realGetPost;
+
 // 포스트 생성 API
 import { createPost as mockCreatePost } from "./../api/postApi.mock";
 import { createPost as realCreatePost } from "./../api/postApi";
