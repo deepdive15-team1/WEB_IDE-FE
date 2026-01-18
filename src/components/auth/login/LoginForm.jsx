@@ -6,6 +6,7 @@ import { Button } from "../../common/Button/Button";
 import { Input } from "../../common/Input/Input";
 import { authApi } from "../../../api/auth";
 import { validateEmail, validatePassword } from "../../../utils/validators";
+import { useAuthStore } from "../../../stores/useAuthStore";
 
 const AuthLinkContainer = styled.div`
   display: flex;
@@ -15,15 +16,15 @@ const AuthLinkContainer = styled.div`
   gap: 15px;
 `;
 
-function LoginForm() {
+export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  //제출 상태
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const navigate = useNavigate();
+  const setLogin = useAuthStore((state) => state.setLogin);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -61,6 +62,9 @@ function LoginForm() {
 
     try {
       await authApi.login({ email, password });
+      const userData = await authApi.getMe();
+
+      setLogin(userData);
       
       navigate("/post-list");
     
@@ -111,5 +115,3 @@ function LoginForm() {
     </>
   );
 }
-
-export default LoginForm;
