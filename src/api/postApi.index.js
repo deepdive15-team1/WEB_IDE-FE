@@ -9,3 +9,13 @@ export const createPost = isMock ? mockCreatePost : realCreatePost;
 import { getOpenPosts as mockGetPosts } from "./../api/postApi.mock";
 import { getOpenPosts as realGetPosts } from "./../api/postApi";
 export const getOpenPosts = isMock ? mockGetPosts : realGetPosts;
+
+// 내 게시글 목록 조회 API (마이페이지 리스트)
+import { getMyPosts as mockGetMyPosts } from "./../api/postApi.mock";
+import { getMyPosts as realGetMyPosts } from "./../api/postApi";
+export const getMyPosts = isMock ? mockGetMyPosts : realGetMyPosts;
+
+// 내 게시글 상세 조회 API
+import { getMyPost as mockGetMyPost } from "./../api/postApi.mock";
+import { getMyPost as realGetMyPost } from "./../api/postApi";
+export const getMyPost = isMock ? mockGetMyPost : realGetMyPost;
