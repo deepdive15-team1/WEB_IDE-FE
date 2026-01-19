@@ -1,6 +1,7 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Button } from "../common/Button/Button";
 import Chip from "../common/Chip";
+import { useAuthStore } from "../../stores/useAuthStore";
 
 import styled from "styled-components";
 import logoIcon from "../../assets/logo.svg";
@@ -10,11 +11,12 @@ import logoutIcon from "../../assets/logout.svg";
 
 export default function PrimaryHeader() {
   const navigate = useNavigate();
+  const { user, Logout } = useAuthStore();
 
   return (
     <Container>
       {/* 추후 auth 또는 포스트 리스트 페이지로 이동하도록 수정 */}
-      <LogoNav>
+      <LogoNav to="/post-list">
         <img src={logoIcon} />
         <p>Code Review IDE</p>
       </LogoNav>
@@ -25,7 +27,7 @@ export default function PrimaryHeader() {
           size="sm"
           startIcon={postIcon}
           // 추후 포스트 리스트 페이지로 이동하도록 수정
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/post-list")}
         >
           게시글 목록
         </Button>
@@ -34,21 +36,22 @@ export default function PrimaryHeader() {
           size="sm"
           startIcon={profileIcon}
           // 추후 포스트 리스트 페이지로 이동하도록 수정
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/mypage")}
         >
           마이페이지
         </Button>
       </PageNav>
 
       <Auth>
-        {/* 임시 사용자 부분을 실제 사용자 이름으로 수정할 것 */}
-        <Chip>임시 사용자</Chip>
+        {user?.nickname && <Chip>{user.nickname}</Chip>}
         <Button
           variant="text"
           size="sm"
           startIcon={logoutIcon}
-          // 추후 로그아웃 로직으로 수정
-          onClick={() => navigate("/")}
+          onClick={async () => {
+            await Logout();
+            navigate("/");
+          }}
         >
           로그아웃
         </Button>
@@ -74,7 +77,7 @@ const Container = styled.header`
   }
 `;
 
-const LogoNav = styled.div`
+const LogoNav = styled(Link)`
   display: flex;
   align-items: center;
   gap: 8px;
