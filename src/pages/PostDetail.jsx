@@ -1,23 +1,29 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect, useState, useCallback } from "react";
+import { useParams, useLocation } from "react-router-dom";
 import { getPost } from "../api/postApi.index";
 import PostPageLayout from "../components/post/PostPageLayout";
 import PostDetailHeaderContent from "../components/header/PostDetailHeaderContent";
+import PostEditHeaderContent from "../components/header/PostEditHeaderContent";
 import PostSection from "../components/post/PostSection";
 import PostCodeEditor from "../components/post/PostCodeEditor";
 import ChatSection from "../components/chat/ChatSection";
 import Chip from "../components/common/Chip/Chip";
+import usePostCreateStore from "../stores/postCreateStore";
 
 import linkedIcon from "../assets/linked.svg";
 
 export default function PostDetail() {
   const { postId } = useParams();
+  const location = useLocation();
+  const isEditMode = location.pathname.includes("/post-edit/");
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedLineNumber, setSelectedLineNumber] = useState(null);
 
-  const fetchPost = async () => {
+  const fetchPost = useCallback(async () => {
+    if (!postId) return;
+    
     try {
       setLoading(true);
       const data = await getPost(Number(postId));
@@ -29,13 +35,27 @@ export default function PostDetail() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [postId]);
 
   useEffect(() => {
-    if (postId) {
+    fetchPost();
+  }, [fetchPost, location.pathname]);
+
+  // 편집 모드일 때 포스트 데이터를 스토어에 로드
+  useEffect(() => {
+    if (isEditMode && post) {
+      const store = usePostCreateStore.getState();
+      store.setLanguage(post.language?.toLowerCase() || "javascript");
+      store.setCodeTextImmediate(post.codeText || "");
+    }
+  }, [isEditMode, post]);
+
+  // 편집 모드에서 일반 모드로 전환될 때 데이터 다시 가져오기
+  useEffect(() => {
+    if (!isEditMode) {
       fetchPost();
     }
-  }, [postId]);
+  }, [isEditMode, fetchPost]);
 
   if (loading) {
     return <div>로딩 중...</div>;
@@ -53,39 +73,47 @@ export default function PostDetail() {
   };
 
   return (
-    <PostPageLayout postHeader={<PostDetailHeaderContent post={post} onPostUpdate={fetchPost} />}>
+    <PostPageLayout 
+      postHeader={
+        isEditMode 
+          ? <PostEditHeaderContent postId={Number(postId)} />
+          : <PostDetailHeaderContent post={post} onPostUpdate={fetchPost} />
+      }
+    >
       <PostSection
         title="코드"
-        descript="줄 번호를 클릭하여 해당 줄에 대한 댓글을 작성할 수 있습니다."
+        descript={isEditMode ? "코드를 수정하세요." : "줄 번호를 클릭하여 해당 줄에 대한 댓글을 작성할 수 있습니다."}
       >
         <PostCodeEditor
           language={editorLanguage}
-          codeText={post.codeText}
-          readOnly={true}
-          onLineClick={handleLineClick}
+          codeText={isEditMode ? undefined : post.codeText}
+          readOnly={isEditMode ? false : true}
+          onLineClick={isEditMode ? undefined : handleLineClick}
         />
       </PostSection>
 
-      <PostSection
-        title="채팅"
-        descript="코드 라인을 선택하고 댓글을 달아보세요."
-        statusChip={
-          <Chip
-            bgColor="var(--color-completed-bg)"
-            textColor="var(--color-completed-text)"
-            icon={linkedIcon}
-          >
-            실시간 연결됨
-          </Chip>
-        }
-      >
-        <ChatSection 
-          postId={post.postId} 
-          roomId={post.roomId}
-          selectedLineNumber={selectedLineNumber}
-          onLineClick={setSelectedLineNumber}
-        />
-      </PostSection>
+      {!isEditMode && (
+        <PostSection
+          title="채팅"
+          descript="코드 라인을 선택하고 댓글을 달아보세요."
+          statusChip={
+            <Chip
+              bgColor="var(--color-completed-bg)"
+              textColor="var(--color-completed-text)"
+              icon={linkedIcon}
+            >
+              실시간 연결됨
+            </Chip>
+          }
+        >
+          <ChatSection 
+            postId={post.id || post.postId} 
+            roomId={post.roomId}
+            selectedLineNumber={selectedLineNumber}
+            onLineClick={setSelectedLineNumber}
+          />
+        </PostSection>
+      )}
     </PostPageLayout>
   );
 }
