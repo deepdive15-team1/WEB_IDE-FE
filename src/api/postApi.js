@@ -75,7 +75,31 @@ export const createPost = async (requestBody) => {
  */
 export const completePost = async (postId) => {
   const response = await axiosInstance.post(`/posts/${postId}/complete`);
+  
+  return response.data;
+};
 
+/**
+ * 내 게시글 목록 조회 API
+ * GET /posts/my?page={page}&size={size}
+ * @param {number} page - 페이지 번호
+ * @param {number} size - 페이지 크기
+ * @returns {Promise<Object>} response.content - 게시글 목록
+ * @returns {Promise<number>} response.content[].postId - 게시글 ID
+ * @returns {Promise<string>} response.content[].title - 제목
+ * @returns {Promise<string>} response.content[].description - 본문/설명
+ * @returns {Promise<string>} response.content[].language - 프로그래밍 언어 (예: "JAVA", "JAVASCRIPT", "PYTHON" 등)
+ * @returns {Promise<number>} response.content[].authorId - 작성자 ID
+ * @returns {Promise<string>} response.content[].authorNickname - 작성자 닉네임
+ * @returns {Promise<string>} response.content[].status - 상태 (OPEN/COMPLETED)
+ * @returns {Promise<string>} response.content[].createdAt - 생성일
+ * @returns {Promise<string>} response.content[].updatedAt - 수정일
+ */
+export const getMyPosts = async (page = 0, size = 20) => {
+  const response = await axiosInstance.get(
+    `/posts/my?page=${page}&size=${size}`
+  );
+  
   return response.data;
 };
 
@@ -92,5 +116,27 @@ export const completePost = async (postId) => {
 export const updatePostCode = async (postId, requestBody) => {
   const response = await axiosInstance.put(`/posts/${postId}/code`, requestBody);
 
+  return response.data;
+};
+
+/**
+ * 내 게시글 상세 조회 API
+ * GET /posts/me/{postId}
+ * @param {number} postId - 조회할 게시글 ID
+ * @returns {Promise<Object>} 게시글 상세 정보
+ * @returns {Promise<number>} response.postId - 게시글 ID
+ * @returns {Promise<string>} response.title - 게시글 제목
+ * @returns {Promise<number>} response.authorId - 작성자 ID
+ * @returns {Promise<string>} response.authorNickname - 작성자 닉네임
+ * @returns {Promise<string>} response.description - 게시글 설명
+ * @returns {Promise<string>} response.language - 프로그래밍 언어
+ * @returns {Promise<string>} response.status - 게시글 상태 ("OPEN" | "COMPLETED")
+ * @returns {Promise<string>} response.codeText - 코드 내용
+ * @returns {Promise<string>} response.createdAt - 생성 일시
+ * @returns {Promise<string|null>} response.completedAt - 완료 일시 (없으면 null)
+ * @returns {Promise<number|null>} response.roomId - 채팅방 ID (없으면 null)
+ */
+export const getMyPost = async (postId) => {
+  const response = await axiosInstance.get(`/posts/me/${postId}`);
   return response.data;
 };
