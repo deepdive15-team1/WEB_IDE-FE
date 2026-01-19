@@ -77,8 +77,7 @@ const stats = {
 
   // 상세 페이지 이동 핸들러
   const handlePostClick = (postId) => {
-    console.log(`게시물 상세 페이지 이동: ${postId}`);
-    navigate(`/post-detail/${postId}`);
+    navigate(`/post-detail/me/${postId}`);
   };
 
   const userInfo = user || { nickname: '알 수 없음', email: '' };
