@@ -129,10 +129,10 @@ export const useSignup = (onSignupSuccess) => {
   const handleSignup = async (e) => {
     e.preventDefault();
 
-    if (!status.isEmailVerified) {
-      alert("이메일 인증을 완료해주세요.");
-      return;
-    }
+    // if (!status.isEmailVerified) {
+    //   alert("이메일 인증을 완료해주세요.");
+    //   return;
+    // }
     // 에러가 하나라도 있으면 제출 불가
     if (errors.email || errors.password || errors.confirmPassword || !form.email || !form.password || !form.nickname || !form.confirmPassword) {
       alert("입력 정보를 다시 확인해주세요.");

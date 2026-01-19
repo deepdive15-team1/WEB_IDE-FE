@@ -64,7 +64,7 @@ const { form, status, errors, handlers } = useSignup(onSignupSuccess);
 
       <Button 
         fullWidth 
-        disabled={status.isSubmitting || !status.isEmailVerified} 
+        disabled={status.isSubmitting} // !status.isEmailVerified
         type="submit"
         style={{marginTop: '15px'}}
       >
@@ -78,7 +78,7 @@ export default SignupForm;
 
 const InputButtonWrapper = styled.div`
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
   gap: 10px;
   width: 100%;
 
@@ -89,7 +89,7 @@ const InputButtonWrapper = styled.div`
   & > button {
     height: 48px;
     width: 100px;
-    margin-bottom: 5px;
+    margin-top: 32px;
     font-size: 14px;
     padding: 0;
   }
