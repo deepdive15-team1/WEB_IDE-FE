@@ -96,17 +96,6 @@ export default function ChatSection({ postId, roomId, selectedLineNumber: extern
   }, [roomId]);
 
   const handleSendMessage = (messageText, lineNumber) => {
-    // 작성자가 아닌 경우에만 WebSocket 연결 체크
-    if (!isAuthor && !isSocketConnected) {
-      alert("채팅 서버와 연결되어 있지 않습니다.");
-      return;
-    }
-
-    // 작성자인 경우에도 WebSocket이 연결되지 않았으면 경고만 표시하고 계속 진행
-    if (isAuthor && !isSocketConnected) {
-      console.warn("[ChatSection] 작성자이지만 WebSocket 연결이 안 되어 있습니다.");
-    }
-
     //로그인 체크
     if (!user) {
       alert("로그인이 필요한 서비스입니다.");
@@ -121,19 +110,28 @@ export default function ChatSection({ postId, roomId, selectedLineNumber: extern
       sendTime: new Date().toISOString(),
     };
 
-    try {
-      stompClientRef.current.publish({
-        destination: `/publish/rooms/${roomId}`,
-        body: JSON.stringify(newMessage),
-      });
-
-      // 입력창 상태 초기화
-      setSelectedLineNumber(null);
-      if (onLineClick) {
-        onLineClick(null);
+    // WebSocket이 연결되어 있으면 메시지 전송 시도
+    if (isSocketConnected && stompClientRef.current) {
+      try {
+        stompClientRef.current.publish({
+          destination: `/publish/rooms/${roomId}`,
+          body: JSON.stringify(newMessage),
+        });
+      } catch (err) {
+        console.error("메시지 전송 실패:", err);
+        // 전송 실패해도 UI에는 표시
+        setMessages((prev) => [...prev, newMessage]);
       }
-    } catch (err) {
-      console.error("메시지 전송 실패:", err);
+    } else {
+      // WebSocket 연결이 안 되어 있으면 로컬 상태에만 추가 (UI 표시용)
+      console.warn("[ChatSection] WebSocket 연결이 안 되어 있어 로컬에만 메시지를 추가합니다.");
+      setMessages((prev) => [...prev, newMessage]);
+    }
+
+    // 입력창 상태 초기화
+    setSelectedLineNumber(null);
+    if (onLineClick) {
+      onLineClick(null);
     }
   };
 
@@ -153,8 +151,8 @@ export default function ChatSection({ postId, roomId, selectedLineNumber: extern
     );
   }
 
-  // 작성자인 경우 WebSocket 연결 여부와 관계없이 입력창 활성화
-  const isInputDisabled = isAuthor ? false : !isSocketConnected;
+  // WebSocket 연결 여부와 관계없이 항상 입력창 활성화
+  const isInputDisabled = false;
   
   return (
     <Container>
