@@ -179,7 +179,7 @@ export const getPost = async (postId) => {
       codeText: "import { useState } from 'react';\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n  \n  return (\n    <div>\n      <p>Count: {count}</p>\n      <button onClick={() => setCount(count + 1)}>Increment</button>\n    </div>\n  );\n}",
       createdAt: new Date().toISOString(),
       completedAt: null,
-      roomId: null,
+      roomId: 1,
     }
   );
 };
