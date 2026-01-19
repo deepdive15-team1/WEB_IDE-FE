@@ -85,7 +85,7 @@ export const completePost = async (postId) => {
 
 /**
  * 내 게시글 목록 조회 API
- * GET /posts/my?page={page}&size={size}
+ * GET /posts/me?page={page}&size={size}
  * @param {number} page - 페이지 번호
  * @param {number} size - 페이지 크기
  * @returns {Promise<Object>} response.content - 게시글 목록
