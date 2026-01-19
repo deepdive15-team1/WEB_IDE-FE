@@ -3,7 +3,7 @@ import { Button } from "../../common/Button/Button";
 import { Input } from "../../common/Input/Input";
 import ResetPasswordLogo from "../../../assets/icons/ResetPasswordLogo.svg";
 import AccountRecoveryLayout from "./components/AccountRecoveryLayout";
-import Back from "../../../assets/Back.svg";
+import Back from "../../../assets/back.svg";
 import { useNavigate } from "react-router-dom";
 import { authApi } from "../../../api/auth/authApi.index";
 
