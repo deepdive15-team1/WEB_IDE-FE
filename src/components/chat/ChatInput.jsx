@@ -9,6 +9,7 @@ export default function ChatInput({
   onSend,
   selectedLineNumber = null,
   onClearSelectedLine,
+  disabled,
 }) {
   const [message, setMessage] = useState("");
   const textareaRef = useRef(null);
@@ -95,6 +96,7 @@ export default function ChatInput({
         <ChatTextarea
           ref={textareaRef}
           placeholder="메시지를 입력하세요..."
+          disabled={disabled}
           value={message}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
