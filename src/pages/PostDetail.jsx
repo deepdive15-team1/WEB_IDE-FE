@@ -80,7 +80,7 @@ export default function PostDetail() {
         }
       >
         <ChatSection 
-          postId={post.postId} 
+          postId={post.id || post.postId} 
           roomId={post.roomId}
           selectedLineNumber={selectedLineNumber}
           onLineClick={setSelectedLineNumber}

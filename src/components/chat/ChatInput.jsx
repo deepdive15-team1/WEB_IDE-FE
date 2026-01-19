@@ -85,7 +85,13 @@ export default function ChatInput({
     <Container>
       {selectedLineNumber && (
         <LineChipContainer>
-          <Chip variant="tagging">#{selectedLineNumber}번 줄</Chip>
+          <Chip 
+            variant="tagging" 
+            onClick={onClearSelectedLine}
+            style={{ cursor: "pointer" }}
+          >
+            #{selectedLineNumber}번 줄
+          </Chip>
           {onClearSelectedLine && (
             <ClearButton onClick={onClearSelectedLine}>×</ClearButton>
           )}

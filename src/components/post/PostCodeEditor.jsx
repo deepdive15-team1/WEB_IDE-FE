@@ -15,6 +15,8 @@ export default function PostCodeEditor({ language, codeText: codeTextProp, readO
   // readOnly를 boolean으로 변환 (문자열 "true"도 처리)
   const isReadOnly = readOnly === true || readOnly === "true";
   const editorRef = useRef(null);
+  const monacoRef = useRef(null);
+  const mouseDownDisposableRef = useRef(null);
 
   // codeText prop이 있으면 사용, 없으면 스토어에서 구독 (PostCreate 리렌더링 방지)
   const codeTextFromStore = usePostCreateStore((state) => state.codeText);
@@ -31,6 +33,7 @@ export default function PostCodeEditor({ language, codeText: codeTextProp, readO
 
   const handleEditorDidMount = (editor, monaco) => {
     editorRef.current = editor;
+    monacoRef.current = monaco;
     defineCustomTheme(monaco);
     
     // 읽기 전용일 때 키보드 입력 완전히 차단
@@ -39,22 +42,97 @@ export default function PostCodeEditor({ language, codeText: codeTextProp, readO
         e.preventDefault();
         e.stopPropagation();
       });
+    }
 
-      // 줄 클릭 이벤트 처리 (읽기 전용일 때만)
-      if (onLineClick) {
-        editor.onMouseDown((e) => {
-          const target = e.target;
-          if (target && target.type === monaco.editor.MouseTargetType.GUTTER_LINE_NUMBERS) {
-            const position = editor.getPosition();
-            if (position) {
-              const lineNumber = position.lineNumber;
-              onLineClick(lineNumber);
-            }
-          }
-        });
-      }
+    // 줄 클릭 이벤트 리스너 초기 등록 (읽기 전용일 때만)
+    if (isReadOnly && onLineClick) {
+      registerLineClickHandler(editor, monaco, onLineClick);
     }
   };
+
+  // 줄 클릭 이벤트 핸들러 등록 함수
+  const registerLineClickHandler = (editor, monaco, callback) => {
+    // 기존 리스너가 있으면 제거
+    if (mouseDownDisposableRef.current) {
+      mouseDownDisposableRef.current.dispose();
+    }
+
+    // 줄 번호 영역 클릭 이벤트 핸들러 등록
+    mouseDownDisposableRef.current = editor.onMouseDown((e) => {
+      const target = e.target;
+      
+      // 줄 번호 영역을 클릭했을 때만 처리
+      if (target && target.type === monaco.editor.MouseTargetType.GUTTER_LINE_NUMBERS) {
+        const position = target.position;
+        if (position) {
+          const lineNumber = position.lineNumber;
+          if (callback && typeof callback === 'function') {
+            callback(lineNumber);
+          }
+        }
+      }
+    });
+  };
+
+  // onLineClick이 변경될 때 이벤트 리스너 업데이트
+  useEffect(() => {
+    const editor = editorRef.current;
+    const monaco = monacoRef.current;
+    
+    // 에디터가 아직 마운트되지 않았거나 조건이 맞지 않으면 리턴
+    if (!editor || !monaco || !isReadOnly || !onLineClick) {
+      // 조건이 맞지 않으면 기존 리스너 제거
+      if (mouseDownDisposableRef.current) {
+        try {
+          mouseDownDisposableRef.current.dispose();
+        } catch (error) {
+          console.warn("Monaco Editor dispose 에러:", error);
+        }
+        mouseDownDisposableRef.current = null;
+      }
+      return;
+    }
+
+    // 이벤트 리스너 업데이트
+    registerLineClickHandler(editor, monaco, onLineClick);
+
+    // cleanup: 이벤트 리스너 제거
+    return () => {
+      if (mouseDownDisposableRef.current) {
+        try {
+          mouseDownDisposableRef.current.dispose();
+        } catch (error) {
+          console.warn("Monaco Editor dispose 에러:", error);
+        }
+        mouseDownDisposableRef.current = null;
+      }
+    };
+  }, [isReadOnly, onLineClick]);
+
+  // 컴포넌트 언마운트 시 에디터 정리
+  useEffect(() => {
+    return () => {
+      // 이벤트 리스너 정리
+      if (mouseDownDisposableRef.current) {
+        try {
+          mouseDownDisposableRef.current.dispose();
+        } catch (error) {
+          console.warn("Monaco Editor dispose 에러:", error);
+        }
+        mouseDownDisposableRef.current = null;
+      }
+
+      // 에디터 인스턴스 정리
+      if (editorRef.current) {
+        try {
+          editorRef.current.dispose();
+        } catch (error) {
+          console.warn("Monaco Editor dispose 에러:", error);
+        }
+        editorRef.current = null;
+      }
+    };
+  }, []);
 
   return (
     <EditorWrapper>

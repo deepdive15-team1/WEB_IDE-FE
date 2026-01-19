@@ -33,10 +33,10 @@ export default function ChatSection({ postId, roomId, selectedLineNumber: extern
         const chatMessages = await getChatMessages(roomId);
         // console.log("[ChatSection] 채팅 히스토리 조회 성공:", chatMessages);
         
-        // API 응답에는 lineNumber가 없을 수 있으므로 null로 설정
+        // API 응답의 codeLineNumbers를 lineNumber로 매핑 (없을 수 있음)
         const formattedMessages = chatMessages.map((msg) => ({
           ...msg,
-          lineNumber: msg.lineNumber || null,
+          lineNumber: msg.codeLineNumbers ?? null,
         }));
         setMessages(formattedMessages);
       } catch (error) {
