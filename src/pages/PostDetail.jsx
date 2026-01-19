@@ -9,6 +9,7 @@ import PostCodeEditor from "../components/post/PostCodeEditor";
 import ChatSection from "../components/chat/ChatSection";
 import Chip from "../components/common/Chip/Chip";
 import usePostCreateStore from "../stores/postCreateStore";
+import { useAuthStore } from "../stores/useAuthStore";
 
 import linkedIcon from "../assets/linked.svg";
 
@@ -20,6 +21,10 @@ export default function PostDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedLineNumber, setSelectedLineNumber] = useState(null);
+  const user = useAuthStore((state) => state.user);
+  
+  // 로그인한 사용자가 포스트 작성자인지 확인
+  const isAuthor = user && post && post.authorId === user.id;
 
   const fetchPost = useCallback(async () => {
     if (!postId) return;
@@ -27,6 +32,7 @@ export default function PostDetail() {
     try {
       setLoading(true);
       const data = await getPost(Number(postId));
+      // console.log("📄 포스트 상세 API 응답:", data);
       setPost(data);
     } catch (err) {
       console.error("포스트 상세 조회 실패:", err);
@@ -111,6 +117,7 @@ export default function PostDetail() {
             roomId={post.roomId}
             selectedLineNumber={selectedLineNumber}
             onLineClick={setSelectedLineNumber}
+            isAuthor={isAuthor}
           />
         </PostSection>
       )}

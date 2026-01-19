@@ -6,7 +6,7 @@ import { getChatMessages, joinChatRoom } from "../../api/chat/chatApi.index";
 import { createStompClient } from "../../api/ws/stompClient.index";
 import { useAuthStore } from "../../stores/useAuthStore";
 
-export default function ChatSection({ postId, roomId, selectedLineNumber: externalSelectedLine, onLineClick }) {
+export default function ChatSection({ postId, roomId, selectedLineNumber: externalSelectedLine, onLineClick, isAuthor = false }) {
   const [messages, setMessages] = useState([]);
   const [selectedLineNumber, setSelectedLineNumber] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -96,9 +96,15 @@ export default function ChatSection({ postId, roomId, selectedLineNumber: extern
   }, [roomId]);
 
   const handleSendMessage = (messageText, lineNumber) => {
-    if (!isSocketConnected) {
+    // 작성자가 아닌 경우에만 WebSocket 연결 체크
+    if (!isAuthor && !isSocketConnected) {
       alert("채팅 서버와 연결되어 있지 않습니다.");
       return;
+    }
+
+    // 작성자인 경우에도 WebSocket이 연결되지 않았으면 경고만 표시하고 계속 진행
+    if (isAuthor && !isSocketConnected) {
+      console.warn("[ChatSection] 작성자이지만 WebSocket 연결이 안 되어 있습니다.");
     }
 
     //로그인 체크
@@ -147,10 +153,13 @@ export default function ChatSection({ postId, roomId, selectedLineNumber: extern
     );
   }
 
+  // 작성자인 경우 WebSocket 연결 여부와 관계없이 입력창 활성화
+  const isInputDisabled = isAuthor ? false : !isSocketConnected;
+  
   return (
     <Container>
       <ChatMessageList messages={messages} />
-      <ChatInput onSend={handleSendMessage} selectedLineNumber={selectedLineNumber} onClearSelectedLine={handleClearSelectedLine} disabled={!isSocketConnected}/>
+      <ChatInput onSend={handleSendMessage} selectedLineNumber={selectedLineNumber} onClearSelectedLine={handleClearSelectedLine} disabled={isInputDisabled}/>
     </Container>
   );
 }
