@@ -113,3 +113,104 @@ export const createPost = async (requestBody) => {
     createdAt: new Date().toISOString(),
   };
 };
+
+// 내 게시글 목록 조회 Mock
+export const getMyPosts = async (page, size) => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+
+  return {
+    content: [
+      {
+        postId: 10,
+        title: "이 코드 리뷰 부탁해요 (Java 스트림 처리)",
+        description: "리스트를 필터링하고 변환하는 과정에서 스트림을 썼는데, 성능상 이슈가 없을지 봐주세요.",
+        language: "JAVA",
+        authorId: 1,
+        authorNickname: "test",
+        status: "OPEN",
+        createdAt: "2026-01-14T15:30:12.123+09:00",
+        updatedAt: "2026-01-14T15:30:12.123+09:00",
+      },
+      {
+        postId: 9,
+        title: "React useEffect 무한 루프 문제",
+        description: "의존성 배열에 객체를 넣었더니 계속 리렌더링이 발생합니다. useMemo를 써야 할까요?",
+        language: "JAVASCRIPT",
+        authorId: 1,
+        authorNickname: "test",
+        status: "OPEN",
+        createdAt: "2026-01-13T10:15:00.000+09:00",
+        updatedAt: "2026-01-13T10:20:00.000+09:00",
+      },
+      {
+        postId: 8,
+        title: "Spring Boot JPA N+1 문제 해결 조언 구합니다",
+        description: "Fetch Join을 적용했는데도 연관된 엔티티를 가져올 때 쿼리가 추가로 나갑니다.",
+        language: "JAVA",
+        authorId: 1,
+        authorNickname: "test",
+        status: "COMPLETED",
+        createdAt: "2026-01-10T09:00:00.000+09:00",
+        updatedAt: "2026-01-11T14:00:00.000+09:00",
+      },
+      {
+        postId: 7,
+        title: "TypeScript 제네릭 타입 추론 질문",
+        description: "함수 파라미터로 들어오는 객체의 키값을 타입으로 제한하고 싶은데 잘 안되네요.",
+        language: "TYPESCRIPT",
+        authorId: 1,
+        authorNickname: "test",
+        status: "OPEN",
+        createdAt: "2026-01-08T14:20:00.000+09:00",
+        updatedAt: "2026-01-08T14:20:00.000+09:00",
+      },
+      {
+        postId: 6,
+        title: "파이썬 알고리즘 풀이 코드 리뷰 (DFS)",
+        description: "백준 문제 풀이입니다. 재귀 깊이가 깊어져서 런타임 에러가 나는데 로직 문제일까요?",
+        language: "PYTHON",
+        authorId: 1,
+        authorNickname: "test",
+        status: "COMPLETED",
+        createdAt: "2026-01-05T18:45:00.000+09:00",
+        updatedAt: "2026-01-06T09:00:00.000+09:00",
+      },
+    ],
+    page: page,
+    size: size,
+    totalElements: 5,
+    totalPages: 1,
+  };
+};
+
+// 내 게시글 상세 조회 Mock
+export const getMyPost = async (postId) => {
+  await new Promise((resolve) => setTimeout(resolve, 500));
+
+// 목록(postId: 10)에 있던 데이터와 이어지도록 구성
+  return {
+    postId: postId,
+    title: "이 코드 리뷰 부탁해요 (Java 스트림 처리)",
+    description: "리스트를 필터링하고 변환하는 과정에서 스트림을 썼는데, 성능상 이슈가 없을지 봐주세요.",
+    authorId: 1,
+    authorNickname: "test", // 로그인한 내 닉네임
+    language: "JAVA",
+    status: "OPEN",
+    
+    // 상세 페이지 전용 필드 추가
+    codeText: `import java.util.List;
+import java.util.stream.Collectors;
+
+public class StreamTest {
+    public List<String> processList(List<String> input) {
+        return input.stream()
+            .filter(s -> s.length() > 5)
+            .map(String::toUpperCase)
+            .collect(Collectors.toList());
+    }
+}`,
+    createdAt: "2026-01-14T15:30:12.123+09:00",
+    completedAt: null,
+    roomId: null
+  };
+};
