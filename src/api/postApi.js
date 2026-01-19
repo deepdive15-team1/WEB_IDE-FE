@@ -97,7 +97,7 @@ export const completePost = async (postId) => {
  */
 export const getMyPosts = async (page = 0, size = 20) => {
   const response = await axiosInstance.get(
-    `/posts/my?page=${page}&size=${size}`
+    `/posts/me?page=${page}&size=${size}`
   );
   
   return response.data;
