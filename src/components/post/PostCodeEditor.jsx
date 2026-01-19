@@ -33,28 +33,60 @@ export default function PostCodeEditor({ language, codeText: codeTextProp, readO
     editorRef.current = editor;
     defineCustomTheme(monaco);
     
-    // 읽기 전용일 때 키보드 입력 완전히 차단
-    if (isReadOnly) {
-      editor.onKeyDown((e) => {
-        e.preventDefault();
-        e.stopPropagation();
-      });
-
-      // 줄 클릭 이벤트 처리 (읽기 전용일 때만)
-      if (onLineClick) {
-        editor.onMouseDown((e) => {
-          const target = e.target;
-          if (target && target.type === monaco.editor.MouseTargetType.GUTTER_LINE_NUMBERS) {
-            const position = editor.getPosition();
-            if (position) {
-              const lineNumber = position.lineNumber;
-              onLineClick(lineNumber);
-            }
+    // 편집 모드일 때 초기 코드 값 설정 (스토어에서 가져온 값)
+    if (!isReadOnly && !codeTextProp && codeTextFromStore) {
+      editor.setValue(codeTextFromStore);
+      latestCodeText = codeTextFromStore;
+    }
+    
+    // 줄 클릭 이벤트 처리 (읽기 전용일 때만)
+    if (onLineClick) {
+      editor.onMouseDown((e) => {
+        const target = e.target;
+        if (target && target.type === monaco.editor.MouseTargetType.GUTTER_LINE_NUMBERS) {
+          const position = editor.getPosition();
+          if (position) {
+            const lineNumber = position.lineNumber;
+            onLineClick(lineNumber);
           }
-        });
-      }
+        }
+      });
     }
   };
+  
+  // readOnly prop이 변경될 때 에디터 옵션 업데이트
+  useEffect(() => {
+    if (editorRef.current) {
+      editorRef.current.updateOptions({
+        readOnly: isReadOnly,
+        domReadOnly: isReadOnly,
+      });
+      
+      // 읽기 전용일 때 키보드 입력 차단
+      if (isReadOnly) {
+        const keyDownHandler = (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+        };
+        editorRef.current.onKeyDown(keyDownHandler);
+        
+        return () => {
+          // 클린업은 Monaco Editor가 자동으로 처리
+        };
+      }
+    }
+  }, [isReadOnly]);
+  
+  // 편집 모드일 때 스토어의 코드 값이 변경되면 에디터에 반영
+  useEffect(() => {
+    if (!isReadOnly && !codeTextProp && editorRef.current && codeTextFromStore) {
+      const currentValue = editorRef.current.getValue();
+      if (currentValue !== codeTextFromStore) {
+        editorRef.current.setValue(codeTextFromStore);
+        latestCodeText = codeTextFromStore;
+      }
+    }
+  }, [codeTextFromStore, isReadOnly, codeTextProp]);
 
   return (
     <EditorWrapper>

@@ -26,7 +26,7 @@ function App() {
     <Routes>
       <Route path="/" element={<AuthPage />} />  
       <Route path="/post-create" element={<PostCreate />} />
-      <Route path="/post-edit/:postId" element={<PostCreate />} />
+      <Route path="/post-edit/:postId" element={<PostDetail />} />
       <Route path="/post-detail/me/:postId" element={<PostDetail isMypost={true}/>} />
       <Route path="/post-detail/:postId" element={<PostDetail isMypost={false}/>} />
       <Route path="/post-list" element={<PostList />} />

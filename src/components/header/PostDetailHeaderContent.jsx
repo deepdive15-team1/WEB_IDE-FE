@@ -28,7 +28,7 @@ export default function PostDetailHeaderContent({ post, onPostUpdate }) {
 
     try {
       setIsCompleting(true);
-      await completePost(post.postId);
+      await completePost(post.id || post.postId);
       
       // 부모 컴포넌트에 업데이트 알림 (상태 새로고침)
       if (onPostUpdate) {
@@ -97,7 +97,7 @@ export default function PostDetailHeaderContent({ post, onPostUpdate }) {
                 <Button 
                   variant="outline" 
                   size="md"
-                  onClick={() => navigate(`/post-edit/${post.postId}`)}
+                  onClick={() => navigate(`/post-edit/${post.id || post.postId}`)}
                 >
                   코드 수정
                 </Button>
