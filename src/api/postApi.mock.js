@@ -1,8 +1,8 @@
 export const getOpenPosts = async (page, size) => {
   return {
-    content: [
+    items: [
       {
-        postId: 10,
+        id: 10,
         title: "이 코드 리뷰 부탁해요",
         description: "리팩토링 방향이 맞는지 봐주세요",
         language: "JAVA",
@@ -13,7 +13,7 @@ export const getOpenPosts = async (page, size) => {
         updatedAt: "2026-01-18T09:30:00",
       },
       {
-        postId: 9,
+        id: 9,
         title: "리액트 상태 관리 질문",
         description: "Context API와 Zustand 중 어떤 선택이 더 나을지 고민입니다.",
         language: "JAVASCRIPT",
@@ -24,7 +24,7 @@ export const getOpenPosts = async (page, size) => {
         updatedAt: "2026-01-14T14:10:45.456+09:00",
       },
       {
-        postId: 8,
+        id: 8,
         title: "Spring Security 설정 관련 문의",
         description: "JWT 기반 인증 설정 중 막히는 부분이 있습니다.",
         language: "JAVA",
@@ -35,7 +35,7 @@ export const getOpenPosts = async (page, size) => {
         updatedAt: "2026-01-15T10:20:30.123+09:00",
       },
       {
-        postId: 7,
+        id: 7,
         title: "비동기 처리 구조가 맞는지 봐주세요",
         description: "Promise 체이닝 구조가 올바른지 리뷰 요청드립니다.",
         language: "JAVASCRIPT",
@@ -46,7 +46,7 @@ export const getOpenPosts = async (page, size) => {
         updatedAt: "2026-01-13T18:42:33.111+09:00",
       },
       {
-        postId: 6,
+        id: 6,
         title: "JPA 연관관계 설계 질문",
         description: "일대다 관계 매핑 시 주의할 점을 알고 싶습니다.",
         language: "JAVA",
@@ -68,7 +68,7 @@ export const getOpenPosts = async (page, size) => {
         updatedAt: "2026-01-12T16:55:48.222+09:00",
       },
       {
-        postId: 4,
+        id: 4,
         title: "코드 에디터 성능 이슈",
         description: "대용량 코드 입력 시 렌더링이 느려집니다.",
         language: "JAVASCRIPT",
@@ -79,7 +79,7 @@ export const getOpenPosts = async (page, size) => {
         updatedAt: "2026-01-11T20:30:19.333+09:00",
       },
       {
-        postId: 3,
+        id: 3,
         title: "REST API 설계 피드백 요청",
         description: "RESTful한 엔드포인트 설계인지 검토 부탁드립니다.",
         language: "JAVA",
@@ -90,7 +90,7 @@ export const getOpenPosts = async (page, size) => {
         updatedAt: "2026-01-11T13:12:59.444+09:00",
       },
       {
-        postId: 2,
+        id: 2,
         title: "리스트 페이징 처리 질문",
         description: "무한 스크롤과 페이지네이션 중 어떤 방식이 좋을까요?",
         language: "JAVASCRIPT",
@@ -101,7 +101,7 @@ export const getOpenPosts = async (page, size) => {
         updatedAt: "2026-01-10T19:08:07.555+09:00",
       },
       {
-        postId: 1,
+        id: 1,
         title: "초기 프로젝트 구조 리뷰 요청",
         description: "프론트엔드 프로젝트 구조에 대한 조언을 구합니다.",
         language: "JAVA",

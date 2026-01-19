@@ -23,9 +23,9 @@ export default function PostList() {
     const fetchOpenPosts = async () => {
       try {
         const data = await getOpenPosts(0, 20);
-        setContent(data.content ?? []);
+        setContent(data.items ?? []);
       } catch (error) {
-        console.log(error);
+        console.error("포스트 목록 조회 실패:", error);
       }
     };
 

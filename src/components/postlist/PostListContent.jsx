@@ -13,7 +13,7 @@ export default function PostListContent({ posts, onPostClick }) {
   return (
     <Container>
       {posts.map((post) => (
-        <PostCard key={post.postId} post={post} onClick={onPostClick} />
+        <PostCard key={post.id} post={post} onClick={onPostClick} />
       ))}
     </Container>
   );
