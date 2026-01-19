@@ -5,6 +5,7 @@ import Chip from "../common/Chip/Chip";
 import { formatDate } from "../../utils/formatDate";
 import { useAuthStore } from "../../stores/useAuthStore";
 import { completePost } from "../../api/postApi.index";
+import { joinChatRoom } from "../../api/chat/chatApi.index";
 
 import styled from "styled-components";
 import backIcon from "../../assets/back.svg";
@@ -44,13 +45,28 @@ export default function PostDetailHeaderContent({ post, onPostUpdate }) {
     }
   };
 
+  const handleJoinChatRoom = async () => {
+    if (!post || !post.roomId) {
+      alert("채팅방 정보를 불러올 수 없습니다.");
+      return;
+    }
+
+    try {
+      await joinChatRoom(post.roomId);
+      // console.log("💡 채팅방 참여 성공 - roomId:", post.roomId);
+      // 채팅 섹션으로 스크롤하거나 포커스를 이동할 수 있음
+    } catch (error) {
+      alert("채팅방 참여에 실패했습니다. 다시 시도해주세요.");
+    }
+  };
+
   if (!post) {
     return null;
   }
 
   // 로그인한 사용자가 포스트 작성자인지 확인
-  // const isAuthor = user && post.authorId === user.id;
-  const isAuthor = true;
+  const isAuthor = user && post.authorId === user.id;
+  // const isAuthor = false;
 
   return (
     <Container>
@@ -115,7 +131,7 @@ export default function PostDetailHeaderContent({ post, onPostUpdate }) {
             )
           ) : (
             /* 작성자가 아닐 때: 실시간 연결 버튼 */
-            <Button variant="primary" size="md">
+            <Button variant="primary" size="md" onClick={handleJoinChatRoom}>
               실시간 연결
             </Button>
           )}
