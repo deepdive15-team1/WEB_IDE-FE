@@ -121,8 +121,8 @@ export const getOpenPosts = async (page, size) => {
 
 // 목데이터를 메모리에 저장하여 수정 시 반영되도록 함
 const mockPostData = {
-    10: {
-      postId: 10,
+    1: {
+      postId: 1,
       authorId: 3,
       authorNickname: "backend_master",
       title: "이 코드 리뷰 부탁해요",
@@ -132,7 +132,7 @@ const mockPostData = {
       codeText: "public class A {\n    private String name;\n    \n    public A(String name) {\n        this.name = name;\n    }\n    \n    public String getName() {\n        return name;\n    }\n}",
       createdAt: "2026-01-14T15:30:12.123+09:00",
       completedAt: null,
-      roomId: null,
+      roomId: 1,
     },
     9: {
       postId: 9,
@@ -176,7 +176,7 @@ export const getPost = async (postId) => {
       description: "기본 설명",
       language: "JAVASCRIPT",
       status: "OPEN",
-      codeText: "// 기본 코드",
+      codeText: "import { useState } from 'react';\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n  \n  return (\n    <div>\n      <p>Count: {count}</p>\n      <button onClick={() => setCount(count + 1)}>Increment</button>\n    </div>\n  );\n}",
       createdAt: new Date().toISOString(),
       completedAt: null,
       roomId: null,
