@@ -21,6 +21,7 @@ export const joinChatRoom = async (roomId) => {
  * @returns {Promise<Array>} response[].senderName - 발신자 이름
  * @returns {Promise<Array>} response[].message - 메시지 내용
  * @returns {Promise<Array>} response[].sendTime - 전송 시간 (ISO 8601 형식)
+ * @returns {Promise<Array>} response[].codeLineNumbers - 코드 줄 번호 (선택적)
  */
 export const getChatMessages = async (roomId) => {
   // 개발용 지연 시뮬레이션
@@ -40,12 +41,14 @@ export const getChatMessages = async (roomId) => {
         senderName: "백엔드",
         message: "여기서 이전 상태값을 사용하는 것보다 함수형 업데이트를 사용하는 것이 좋습니다. setCount(prevCount => prevCount + 1) 이렇게요!",
         sendTime: "2025-07-17T20:02:00",
+        codeLineNumbers: 4,
       },
       {
         roomId: 1,
         senderName: "코드리뷰어",
         message: "맞습니다! 특히 여러 번 연속으로 업데이트가 일어날 때 함수형 업데이트가 안전합니다.",
         sendTime: "2025-07-17T20:15:00",
+        codeLineNumbers: 5,
       },
       {
         roomId: 1,

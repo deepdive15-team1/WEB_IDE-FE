@@ -19,6 +19,7 @@ export const joinChatRoom = async (roomId) => {
  * @returns {Promise<Array>} response[].senderName - 발신자 이름
  * @returns {Promise<Array>} response[].message - 메시지 내용
  * @returns {Promise<Array>} response[].sendTime - 전송 시간 (ISO 8601 형식)
+ * @returns {Promise<Array>} response[].codeLineNumbers - 코드 줄 번호
  */
 export const getChatMessages = async (roomId) => {
   const response = await axiosInstance.get(`/chat/rooms/${roomId}/messages`);
