@@ -1,7 +1,7 @@
 import Select, { MenuItem } from "../common/Select";
 import usePostCreateStore from "../../stores/postCreateStore";
 
-export default function PostLanguageField() {
+export default function PostLanguageField({ disabled = false }) {
   // language와 setLanguage만 선택적 구독
   const language = usePostCreateStore((state) => state.language);
   const setLanguage = usePostCreateStore((state) => state.setLanguage);
@@ -13,6 +13,7 @@ export default function PostLanguageField() {
       onChange={(event) => setLanguage(event.target.value)}
       placeholder="프로그래밍 언어 선택"
       variant="filled"
+      disabled={disabled}
     //   errorMessage="* 필수 항목입니다"
     >
       <MenuItem value="cpp">C++</MenuItem>

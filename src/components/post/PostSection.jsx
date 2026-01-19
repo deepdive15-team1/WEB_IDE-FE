@@ -1,12 +1,16 @@
 import styled from "styled-components";
+import Chip from "../common/Chip/Chip";
 
-export default function PostSection({ title, descript, children }) {
+export default function PostSection({ title, descript, children, statusChip }) {
   return (
     <Contrainer>
-      <TitleWrapper>
-        <Title>{title}</Title>
-        <Descript>{descript}</Descript>
-      </TitleWrapper>
+      <TitleHeaderWrapper>
+        <TitleWrapper>
+          <Title>{title}</Title>
+          <Descript>{descript}</Descript>
+        </TitleWrapper>
+        {statusChip && statusChip}
+      </TitleHeaderWrapper>
 
       <ContentWrapper>{children}</ContentWrapper>
     </Contrainer>
@@ -24,9 +28,17 @@ const Contrainer = styled.section`
   min-height: 0;
 `;
 
-const TitleWrapper = styled.header`
-  dispaly: flex;
+const TitleHeaderWrapper = styled.header`
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+`;
+
+const TitleWrapper = styled.div`
+  display: flex;
   flex-direction: column;
+  flex: 1;
 `;
 
 const Title = styled.div`
@@ -47,6 +59,5 @@ const ContentWrapper = styled.article`
   gap: 20px;
   padding: 10px;
   min-height: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden;
 `;

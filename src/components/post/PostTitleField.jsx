@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { Input } from "../common/Input/Input";
 import usePostCreateStore from "../../stores/postCreateStore";
 
-export default function PostTitleField() {
+export default function PostTitleField({ disabled = false }) {
   const titleRef = useRef(null);
   
   // title과 setTitle만 선택적 구독
@@ -17,6 +17,7 @@ export default function PostTitleField() {
       value={title}
       onChange={(e) => setTitle(e.target.value)}
       inputRef={titleRef}
+      disabled={disabled}
     //   errorMessage="* 필수 입력 사항입니다."
     />
   );
