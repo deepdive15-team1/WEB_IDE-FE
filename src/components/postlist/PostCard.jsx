@@ -7,7 +7,7 @@ import profileIcon from "../../assets/profile.svg";
 
 export default function PostCard({ post, onClick }) {
   return (
-    <Container onClick={() => onClick?.(post.postId)}>
+    <Container onClick={() => onClick?.(post.id)}>
       <CardHeader>
         <TitleContainer>
           <Title>{post.title}</Title>

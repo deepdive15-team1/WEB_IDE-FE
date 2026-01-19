@@ -21,10 +21,14 @@ import { axiosInstance } from "./axiosInstance";
  * @returns {Promise<Object>} response.totalPages - 전체 페이지 수
  */
 export const getOpenPosts = async (page, size) => {
-  const response = await axiosInstance.get(
-    `/posts/open?page=${page}&size=${size}`
-  );
+  const response = await axiosInstance.get(`/posts`, {
+    params: {
+      page,
+      size,
+    },
+  });
 
+  // console.log("포스트 리스트 API 응답:", response.data);
   return response.data;
 };
 
